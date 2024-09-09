@@ -83,61 +83,62 @@ DROP TABLE companies_users;
 
 @@ users.json
 
-[
-{
-  "version":[
-    {
-      "number": "1"
-    },
-    {
-      "tables": [
-        {
-          "name": "users",
-          "fields": {
-            "userid": "varchar",
-            "username": "varchar",
-            "password": "varchar",
-            "phone": "varchar",
-            "active": "bigint",
-            "support": "bigint",
-            "is_admin": "bigint"
+
+  {
+           "tables": [
+          {
+             "table": {
+              "name": "users",
+              "fields": {
+                "userid": "varchar",
+                "username": "varchar",
+                "password": "varchar",
+                "phone": "varchar",
+                "active": "bigint",
+                "support": "bigint",
+                "is_admin": "bigint"
+              },
+              "index": {
+                "type": "unique",
+                "fields": "userid"
+              }
+            }
           },
-          "index": {
-            "type": "unique",
-            "fields": "userid"
-          }
-        },
-        {
-          "name": "company_type",
-          "fields": {
-            "company_type": "varchar"
+          {
+            "table": {
+            "name": "company_type",
+            "fields": {
+              "company_type": "varchar"
+            }
+            },
+            "index": {
+              "type": "unique",
+              "fields": "company_type"
+            }
           },
-          "index": {
-            "type": "unique",
-            "fields": "company_type"
+          {
+            "table": {
+              "name": "companies",
+              "fields": {
+                "name": "varchar",
+                "regno": "varchar",
+                "homepage": "varchar",
+                "phone": "varchar",
+                "vatno": "varchar",
+                "company_type_fkey": "bigint"
+              }
+            }
+          },
+          {
+            "table": {
+              "name": "companies_users",
+              "fields": {
+                "companies_fkey": "bigint",
+                "users_fkey": "bigint"
+              }
+            }
           }
-        },
-        {
-          "name": "companies",
-          "fields": {
-            "name": "varchar",
-            "regno": "varchar",
-            "homepage": "varchar",
-            "phone": "varchar",
-            "vatno": "varchar",
-            "company_type_fkey": "bigint"
-          }
-        },
-        {
-          "name": "companies_users",
-          "fields": {
-            "companies_fkey": "bigint",
-            "users_fkey": "bigint"
-          }
-        }
-      ]
-    }
-  ]
-}
-]
+        ]
+      }
+
 

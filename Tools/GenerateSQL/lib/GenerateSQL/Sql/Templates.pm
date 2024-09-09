@@ -1,4 +1,4 @@
-package GenerateSQL::Test::Templates;
+package GenerateSQL::Sql::Templates;
 use v5.40;
 
 1;
@@ -15,7 +15,7 @@ create table if not exists <<tablename>>
     insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
     modby varchar NOT NULL DEFAULT 'System',
     moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-    <<data>>
+    <<fields>>
     CONSTRAINT <<tablename>>_pkey PRIMARY KEY (<<tablename>>_pkey)
     <<foregin_keys>>
 ):

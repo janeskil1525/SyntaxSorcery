@@ -11,8 +11,7 @@ use Mojo::JSON qw {from_json};
 sub create_table {
 
     my $sql = data_section('GenerateSQL::Test::TestData', 'users.sql');
-    my $jsonstr = data_section('GenerateSQL::Test::TestData', 'users.json');
-    my $json = from_json($jsonstr);
+    my $json = from_json(data_section('GenerateSQL::Test::TestData', 'users.json'););
 
     my $test = 1;
 }

@@ -1,11 +1,19 @@
-package GenerateSQL;
-use Mojo::Base   -base,  -signatures;
-
-has 'pg';
-has 'config';
+use v5.40;
+use feature 'class';
+no warnings 'experimental::class';
 
 
-sub process ($self) {
+class GenerateSQL {
 
+    field $log :param :reader;
+    field $source :param;
+    field $target :param;
+
+    sub process () {
+
+    }
 }
+
+
+
 1;
