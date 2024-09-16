@@ -1,4 +1,4 @@
-package Data::Test::Datasections;
+package GenerateSQL::Test::Datasections;
 use strict;
 use warnings FATAL => 'all';
 

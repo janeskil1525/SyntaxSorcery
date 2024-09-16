@@ -7,9 +7,9 @@ no warnings 'experimental::class';
 # Synopsis
 # =========
 #
-# use Data::Load::Datasections
+# use GenerateSQL::Tools::Datasections
 #
-# my $data = Data::Load::Datasections->new(
+# my $data = GenerateSQL::Tools::Datasections->new(
 #       data_sections => ['c1','c2','c3'],
 #       source => 'Class::Containing::Datasections
 #   )->load_data_sections();
@@ -28,7 +28,7 @@ no warnings 'experimental::class';
 #
 # LICENSE
 # =======
-# Data::Load::Datasections  (the distribution) is licensed under the same terms as Perl.
+# GenerateSQL::Tools::Datasections  (the distribution) is licensed under the same terms as Perl.
 #
 # AUTHOR
 # ======
@@ -41,9 +41,9 @@ no warnings 'experimental::class';
 
 our $VERSION = '0.01';
 
-class Data::Load::Datasections {
+class GenerateSQL::Tools::Datasections {
     use Mojo::Loader qw {data_section};
-    use Data::Test::Datasections;;
+    use GenerateSQL::Test::Datasections;
 
     field $data_sections :reader :param;
     field $data_sec :reader = {};
@@ -51,6 +51,7 @@ class Data::Load::Datasections {
 
     # Load all data_sections
     method load_data_sections() {
+
         try {
             my @data_sec = split(',', $data_sections) ;
             my $length = scalar @data_sec;
