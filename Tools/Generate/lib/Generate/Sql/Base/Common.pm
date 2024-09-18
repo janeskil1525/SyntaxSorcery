@@ -2,7 +2,7 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
-class GenerateSQL::Sql::Base::Common {
+class Generate::Sql::Base::Common {
     field $json :param :reader;
     field $template :param :reader;
     field $sql :reader;

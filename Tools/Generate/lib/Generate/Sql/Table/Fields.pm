@@ -41,7 +41,7 @@ no warnings 'experimental::class';
 #
 #
 
-class GenerateSQL::Sql::Table::Fields :isa(GenerateSQL::Sql::Base::Common){
+class Generate::Sql::Table::Fields :isa(Generate::Sql::Base::Common){
     use Syntax::Keyword::Match qw(match);
 
     method create_fields(){

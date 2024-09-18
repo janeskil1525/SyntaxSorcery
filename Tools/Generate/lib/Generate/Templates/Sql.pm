@@ -1,4 +1,4 @@
-package GenerateSQL::Template::Templates;
+package Generate::Templates::Sql;
 use v5.40;
 
 1;
@@ -20,9 +20,9 @@ create table if not exists <<tablename>>
     <<foregin_keys>>
 ):
 
-@@ foregin_key
+@@ foreign_key
 
-CONSTRAINT <<referenced_table>>_fkey FOREIGN KEY (<<referenced_table>>_fkey)
+CONSTRAINT idx_<<referenced_table>>_fkey FOREIGN KEY (<<referenced_table>>_fkey)
 REFERENCES <<referenced_table>> (<<referenced_table>>_pkey) MATCH SIMPLE
                       ON UPDATE NO ACTION
                       ON DELETE NO ACTION

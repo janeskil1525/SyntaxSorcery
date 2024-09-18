@@ -1,4 +1,4 @@
-package GenerateSQL::Test::TestData;
+package Generate::Test::TestData;
 use v5.40;
 
 1;

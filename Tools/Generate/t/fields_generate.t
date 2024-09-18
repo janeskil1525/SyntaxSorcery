@@ -3,9 +3,9 @@ use strict;
 use warnings;
 use Test::More;
 
-use GenerateSQL::Tools::Datasections ;
-use GenerateSQL::Template::Templates;
-use GenerateSQL::Sql::Table::Fields;
+use Generate::Tools::Datasections ;
+use Generate::Templates::Sql;
+use Generate::Sql::Table::Fields;
 use Mojo::JSON qw{from_json};
 
 sub test_create_fields {
@@ -24,13 +24,13 @@ sub test_create_fields {
         }
     ));
     my $test_result = qq {is_admin bigint not null default 0};
-    my $template = GenerateSQL::Tools::Datasections->new(
-        data_sections => "table,foregin_key,index" ,
-        source        => 'GenerateSQL::Template::Templates'
+    my $template = Generate::Tools::Datasections->new(
+        data_sections => "table,foreign_key,index" ,
+        source        => 'Generate::Templates::Sql'
     );
     $template->load_data_sections();
 
-    my $fields = GenerateSQL::Sql::Table::Fields->new(
+    my $fields = Generate::Sql::Table::Fields->new(
         json     => $json,
         template => $template,
     );

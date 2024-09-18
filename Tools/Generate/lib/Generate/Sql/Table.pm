@@ -2,8 +2,7 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
-class GenerateSQL::Sql::Table :isa(GenerateSQL::Sql::Base::Common){
-    field $sql :reader = '';
+class Generate::Sql::Table :isa(Generate::Sql::Base::Common){
 
     method generate_table() {
 
@@ -23,41 +22,55 @@ class GenerateSQL::Sql::Table :isa(GenerateSQL::Sql::Base::Common){
         my $indexes = '';
         my $foreignkeys = "";
 
-
         my $name = $table->{table}->{name};
         if (exists($table->{table}->{fields})) {
             $fields = $self->create_fields($table->{table}->{fields});
-            $foreignkeys = $self->create_fkeys($table->{table}->{fields});
+            $foreignkeys = $self->create_fkeys($table->{table}->{fields}, $name);
         }
 
         if (exists($table->{table}->{index})) {
             $indexes = $self->create_index($table->{table}->{index})
         }
 
-
-
         $result =~ s/<<fields>>/$fields/ig;
         my $test = 1;
 
     }
+    method create_fields($json) {
+        my $fields = Generate::Sql::Table::Fields->new(
+            json     => $json,
+            template => $self->template,
+        );
+        $fields->create_fields();
+        my $sql = $fields->sql;
 
-
-
-
-
-    method create_index($index) {
-        my $result = '';
+        return $sql;
     }
 
-    method create_fkeys($fields) {
-        my $result = "";
-        while (my ($key, $value) = each %{$fields}) {
-            if (index($key,'_fkey')>-1) {
+    method create_index($json) {
+        my $index = Generate::Sql::Table::Index->new(
+            json      => $json,
+            template  => $template,
+            tablename => 'users',
+        );
 
-            }
+        $index->create_index();
+        my $sql = $index->sql;
+        return $sql;
+    }
 
+    method create_fkeys($json, $table_name) {
+        my $foreignkeys = {};
+        my $foreign_key = Generate::Sql::Table::ForeignKey->new(
+            json      => $json,
+            template  => $self->template,
+            tablename => $table_name,
+        );
+        $foreign_key->create_foreign_keys();
+        if ($foreign_key->created() == 1) {
+            $foreignkeys = $foreign_key->templates();
         }
-        return $ressult;
+        return $foreignkeys;
     }
 }
 

@@ -2,7 +2,7 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
-class GenerateSQL::Sql::Table::Index :isa(GenerateSQL::Sql::Base::Common){
+class Generate::Sql::Table::Index :isa(Generate::Sql::Base::Common){
     field $tablename :param = "";
 
     method create_index {

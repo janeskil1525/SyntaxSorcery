@@ -3,7 +3,7 @@ use v5.40;
 
 use Test::More;
 use Test::Mojo;
-use GenerateSQL::Test::TestData;
+use Generate::Test::TestData;
 
 use Mojo::Loader qw {data_section};
 use Mojo::JSON qw {from_json};

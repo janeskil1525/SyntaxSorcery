@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Test::More;
 
-use GenerateSQL::Template::Loader;
+use Generate::Template::Loader;
 
 sub load_all_templates {
     Data::Load::Datasection

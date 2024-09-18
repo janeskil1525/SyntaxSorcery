@@ -41,9 +41,9 @@ no warnings 'experimental::class';
 
 our $VERSION = '0.01';
 
-class GenerateSQL::Tools::Datasections {
+class Generate::Tools::Datasections {
     use Mojo::Loader qw {data_section};
-    use GenerateSQL::Test::Datasections;
+    use Generate::Test::Datasections;
 
     field $data_sections :reader :param;
     field $data_sec :reader = {};
