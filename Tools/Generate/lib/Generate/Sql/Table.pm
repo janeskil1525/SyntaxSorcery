@@ -2,10 +2,14 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
+use Generate::Sql::Table::Fields;
+use Generate::Sql::Table::Index;
+use Generate::Sql::Table::ForeignKey;
+
 class Generate::Sql::Table :isa(Generate::Sql::Base::Common){
 
     method generate_table() {
-
+        my $sql = "";
         if (exists($self->json->{tables})) {
             my $tables = $self->json->{tables};
             my $len = scalar @{$tables};
@@ -28,11 +32,12 @@ class Generate::Sql::Table :isa(Generate::Sql::Base::Common){
             $foreignkeys = $self->create_fkeys($table->{table}->{fields}, $name);
         }
 
-        if (exists($table->{table}->{index})) {
-            $indexes = $self->create_index($table->{table}->{index})
+        if (exists($table->{table})) {
+            $indexes = $self->create_index($table->{table})
         }
 
         $result =~ s/<<fields>>/$fields/ig;
+
         my $test = 1;
 
     }
@@ -41,6 +46,7 @@ class Generate::Sql::Table :isa(Generate::Sql::Base::Common){
             json     => $json,
             template => $self->template,
         );
+
         $fields->create_fields();
         my $sql = $fields->sql;
 
@@ -48,9 +54,10 @@ class Generate::Sql::Table :isa(Generate::Sql::Base::Common){
     }
 
     method create_index($json) {
+        my $test = 1;
         my $index = Generate::Sql::Table::Index->new(
             json      => $json,
-            template  => $template,
+            template  => $self->template,
             tablename => 'users',
         );
 

@@ -6,9 +6,8 @@ our $VERSION = '0.01';
 
 class GenerateSQL {
 
-    field $log :param :reader;
-    field $source :param;
-    field $target :param;
+    field $source_path :param;
+    field $target_path :param;
 
     sub process () {
 

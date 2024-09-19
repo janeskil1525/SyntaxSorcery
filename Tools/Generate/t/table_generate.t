@@ -9,11 +9,12 @@ use Mojo::Log;
 
 use Mojo::Loader qw {data_section};
 use Mojo::JSON qw {from_json};
+use Generate::Tools::Datasections;
 
 # = ["table","foreign_key","index"]
 # 'GenerateSQL::Template::Templates'
 sub generate_table_sql()  {
-
+    my $result = 0;
     my $json = from_json (qq{
     {
             "tables": [
@@ -78,12 +79,14 @@ sub generate_table_sql()  {
     );
     $template->load_data_sections();
 
-    my $result = Generate::Sql::Table->new(
+    my $table = Generate::Sql::Table->new(
         json     => $json,
         template => $template,
     );
 
-    $result->generate_table();
+    $table->generate_table();
+
+    return $result;
 }
 
 ok(generate_table_sql() == 1);
