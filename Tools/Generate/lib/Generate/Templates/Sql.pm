@@ -20,6 +20,8 @@ create table if not exists <<tablename>>
     <<foregin_keys>>
 ):
 
+<<indexes>>
+
 @@ foreign_key
 
 CONSTRAINT idx_<<referenced_table>>_fkey FOREIGN KEY (<<referenced_table>>_fkey)

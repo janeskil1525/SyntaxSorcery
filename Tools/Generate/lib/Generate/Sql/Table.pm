@@ -25,7 +25,7 @@ class Generate::Sql::Table :isa(Generate::Sql::Base::Common){
         my $fields = '';
         my $indexes = '';
         my $foreignkeys = "";
-
+        my $template = $self->template->get_section('table');
         my $name = $table->{table}->{name};
         if (exists($table->{table}->{fields})) {
             $fields = $self->create_fields($table->{table}->{fields});
@@ -36,7 +36,11 @@ class Generate::Sql::Table :isa(Generate::Sql::Base::Common){
             $indexes = $self->create_index($table->{table})
         }
 
-        $result =~ s/<<fields>>/$fields/ig;
+        $template =~ s/<<fields>>/$fields/ig;
+        $template =~ s/<<tablename>>/$name/ig;
+        $template =~ s/<<foregin_keys>>/$foreignkeys->{template_fkey}/ig;
+        $indexes .= '\n' . $foreignkeys->{template_ind};
+        $template =~ s/<<tablename>>/$indexes/ig;
 
         my $test = 1;
 
