@@ -63,7 +63,7 @@ class Generate::Sql::Table::Fields :isa(Generate::Sql::Base::Common){
     method get_defaults($datatype) {
         my $result = "";
         if (index($datatype,'(') > -1) {
-            $datatype = substr($datatype,0,index($datatype,'(')-1)
+            $datatype = substr($datatype,0,index($datatype,'('))
         }
         match(lc($datatype) : eq) {
             case ('bigint') { $result = " not null default 0 \n"}

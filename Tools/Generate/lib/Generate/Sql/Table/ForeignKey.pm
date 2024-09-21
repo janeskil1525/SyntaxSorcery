@@ -16,8 +16,8 @@ class Generate::Sql::Table::ForeignKey :isa(Generate::Sql::Base::Common){
                 if (index($key,'_fkey') > -1) {
                     my ($template_fkey,$template_ind) = $self->get_templates($key);
                     my $referenced_table = substr($key,0,index($key,'_fkey'));
-                    $templates->{template_fkey} .= $template_fkey;
-                    $templates->{template_ind} .= $template_ind;
+                    $templates->{template_fkey} .= ',\n' . $template_fkey;
+                    $templates->{template_ind} .= '\n' . $template_ind;
                     $created = 1;
                 }
             }

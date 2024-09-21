@@ -5,8 +5,9 @@ no warnings 'experimental::class';
 use Generate::Sql::Table::Fields;
 use Generate::Sql::Table::Index;
 use Generate::Sql::Table::ForeignKey;
+use Generate::Sql::Table::Sql;
 
-class Generate::Sql::Table :isa(Generate::Sql::Base::Common){
+    class Generate::Sql::Table :isa(Generate::Sql::Base::Common) {
 
     method generate_table() {
         my $sql = "";
@@ -25,26 +26,55 @@ class Generate::Sql::Table :isa(Generate::Sql::Base::Common){
         my $fields = '';
         my $indexes = '';
         my $foreignkeys = "";
-        my $template = $self->template->get_section('table');
+        my $sql = "";
+
         my $name = $table->{table}->{name};
         if (exists($table->{table}->{fields})) {
             $fields = $self->create_fields($table->{table}->{fields});
             $foreignkeys = $self->create_fkeys($table->{table}->{fields}, $name);
         }
 
-        if (exists($table->{table})) {
+        if (exists($table->{table}->{index})) {
             $indexes = $self->create_index($table->{table})
         }
 
-        $template =~ s/<<fields>>/$fields/ig;
-        $template =~ s/<<tablename>>/$name/ig;
-        $template =~ s/<<foregin_keys>>/$foreignkeys->{template_fkey}/ig;
-        $indexes .= '\n' . $foreignkeys->{template_ind};
-        $template =~ s/<<tablename>>/$indexes/ig;
+        if (exists($table->{table}->{sql})) {
+            $sql = $self->create_sql($table->{table}, $name)
+        }
 
-        my $test = 1;
+        my $template = $self->fill_template($name, $fields, $foreignkeys, $indexes);
+
+        return $template;
 
     }
+
+    method create_sql($json, $tablename) {
+        my $sql_stmt = Generate::Sql::Table::Sql->new(
+        json      => $json,
+        template  => $self->template,
+        tablename => $tablename,
+        );
+        my $result = $sql_stmt->create_sql();
+        return $result;
+    }
+
+    method fill_template($name, $fields, $foreignkeys, $indexes) {
+        my $template = $self->template->get_section('table');
+        $template =~ s/<<fields>>/$fields/ig;
+        $template =~ s/<<tablename>>/$name/ig;
+        if(exists($foreignkeys->{template_fkey})) {
+            $template =~ s/<<foregin_keys>>/$foreignkeys->{template_fkey}/ig;
+        } else {
+            $template =~ s/<<foregin_keys>>//ig;
+        }
+        if(exists($foreignkeys->{template_ind})) {
+            $indexes .= '\n' . $foreignkeys->{template_ind};
+        }
+        $template =~ s/<<tablename>>/$indexes/ig;
+
+        return $template;
+    }
+
     method create_fields($json) {
         my $fields = Generate::Sql::Table::Fields->new(
             json     => $json,
