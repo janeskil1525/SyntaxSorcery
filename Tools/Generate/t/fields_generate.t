@@ -3,9 +3,9 @@ use strict;
 use warnings;
 use Test::More;
 
-use Generate::Tools::Datasections ;
-use Generate::Templates::Sql;
-use Generate::Sql::Table::Fields;
+use Daje::Generate::Tools::Datasections ;
+use Daje::Generate::Templates::Sql;
+use Daje::Generate::Sql::Table::Fields;
 use Mojo::JSON qw{from_json};
 
 sub test_create_fields {
@@ -24,7 +24,7 @@ sub test_create_fields {
         }
     ));
     my $test_result = qq {is_admin bigint not null default 0};
-    my $template = Generate::Tools::Datasections->new(
+    my $template = Daje::Generate::Tools::Datasections->new(
         data_sections => "table,foreign_key,index" ,
         source        => 'Generate::Templates::Sql'
     );
@@ -47,7 +47,7 @@ sub test_create_fields {
 
 sub test_get_defaults {
     my $result = 0;
-    my $defaults = GenerateSQL::Sql::Table::Fields->new(
+    my $defaults = Daje::GenerateSQL::Sql::Table::Fields->new(
         json     => "json",
         template => "template",
     )->get_defaults('integer');

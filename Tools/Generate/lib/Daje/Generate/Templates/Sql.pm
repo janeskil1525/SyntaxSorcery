@@ -1,4 +1,4 @@
-package Generate::Templates::Sql;
+package Daje::Generate::Templates::Sql;
 use v5.40;
 
 1;

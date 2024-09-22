@@ -1,4 +1,4 @@
-package Generate::Test::TestData;
+package Daje::Generate::Test::TestData;
 use v5.40;
 
 1;

@@ -3,9 +3,9 @@ use strict;
 use warnings;
 use Test::More;
 
-use Generate::Sql::Table::Index;
-use Generate::Tools::Datasections ;
-use Generate::Templates::Sql;
+use Daje::Generate::Sql::Table::Index;
+use Daje::Generate::Tools::Datasections ;
+use Daje::Generate::Templates::Sql;
 
 use Mojo::JSON qw {from_json};
 
@@ -22,13 +22,13 @@ sub test_generate_index {
               ]}}
     );
 
-    my $template = Generate::Tools::Datasections->new(
+    my $template = Daje::Generate::Tools::Datasections->new(
         data_sections => "table,foreign_key,index" ,
         source        => 'Generate::Templates::Sql'
     );
     $template->load_data_sections();
 
-    my $index = Generate::Sql::Table::Index->new(
+    my $index = Daje::Generate::Sql::Table::Index->new(
         json      => $json,
         template  => $template,
         tablename => 'users',

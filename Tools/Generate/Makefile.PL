@@ -4,8 +4,8 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-  NAME         => 'Generate',
-  VERSION_FROM => 'lib/Generate.pm',
+  NAME         => 'Daje::Generate',
+  VERSION_FROM => 'lib/Daje/Generate.pm',
   AUTHOR       => 'janskil1525@gmail.com',
   PREREQ_PM    => {
       'Syntax::Keyword::Match '  => '0.15',

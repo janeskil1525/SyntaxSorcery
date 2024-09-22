@@ -2,7 +2,7 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
-class Generate::Sql::Table::ForeignKey :isa(Generate::Sql::Base::Common){
+class Daje::Generate::Sql::Table::ForeignKey :isa(Generate::Sql::Base::Common){
     field $tablename :param = "";
     field $templates :reader = {};
     field $created :reader = 0;

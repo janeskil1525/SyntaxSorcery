@@ -1,0 +1,28 @@
+{
+  "abstract" : "lib::Daje::Generate",
+  "author" : [
+    "John Doe <john.doe@example.com>"
+  ],
+  "dynamic_config" : 0,
+  "generated_by" : "gen-cpan-meta version 0.011",
+  "license" : [
+    "perl_5"
+  ],
+  "meta-spec" : {
+    "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+    "version" : 2
+  },
+  "name" : "Daje::Generate",
+  "prereqs" : {
+    "runtime" : {
+      "requires" : {
+        "perl" : "v5.40.0"
+      }
+    },
+    "test" : {
+      "requires" : {}
+    }
+  },
+  "release_status" : "unstable",
+  "version" : "0.03"
+}

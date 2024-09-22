@@ -2,14 +2,14 @@
 use v5.40;
 
 use Test::More;
-use Generate::Test::TestData;
-use Generate::Sql::Table;
-use Generate::Templates::Sql;
+use Daje::Generate::Test::TestData;
+use Daje::Generate::Sql::Table;
+use Daje::Generate::Templates::Sql;
 use Mojo::Log;
 
 use Mojo::Loader qw {data_section};
 use Mojo::JSON qw {from_json};
-use Generate::Tools::Datasections;
+use Daje::Generate::Tools::Datasections;
 
 # = ["table","foreign_key","index"]
 # 'GenerateSQL::Template::Templates'
@@ -73,13 +73,13 @@ sub generate_table_sql()  {
         }
     });
 
-    my $template = Generate::Tools::Datasections->new(
+    my $template = Daje::Generate::Tools::Datasections->new(
         data_sections => "table,foreign_key,index" ,
         source        => 'Generate::Templates::Sql'
     );
     $template->load_data_sections();
 
-    my $table = Generate::Sql::Table->new(
+    my $table = Daje::Generate::Sql::Table->new(
         json     => $json,
         template => $template,
     );

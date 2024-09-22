@@ -3,10 +3,10 @@ use strict;
 use warnings;
 use Test::More;
 
-use Generate::Template::Loader;
+use Daje::Generate::Template::Loader;
 
 sub load_all_templates {
-    Data::Load::Datasection
+    #Daje::Data::Load::Datasection
 
 }
 done_testing();

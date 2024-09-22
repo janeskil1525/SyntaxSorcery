@@ -3,7 +3,7 @@ use feature 'class';
 no warnings 'experimental::class';
 
 
-class Generate::Sql::Table::Sql :isa(Generate::Sql::Base::Common) {
+class Daje::Generate::Sql::Table::Sql :isa(Generate::Sql::Base::Common) {
     use Syntax::Keyword::Match qw(match);
     field $tablename :param = "";
 

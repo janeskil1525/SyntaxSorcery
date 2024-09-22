@@ -3,10 +3,10 @@ use strict;
 use warnings;
 use Test::More;
 
-use Generate::Tools::Datasections;
-use Generate::Sql::Table::ForeignKey;
+use Daje::Generate::Tools::Datasections;
+use Daje::Generate::Sql::Table::ForeignKey;
 use Mojo::JSON qw{from_json};
-use Generate::Templates::Sql;
+use Daje::Generate::Templates::Sql;
 
 sub test_generate_foregin_key {
     my $result = 0;
@@ -18,13 +18,13 @@ sub test_generate_foregin_key {
             }
         }
     });
-    my $template = Generate::Tools::Datasections->new(
+    my $template = Daje::Generate::Tools::Datasections->new(
         data_sections => "table,foreign_key,index" ,
         source        => 'Generate::Templates::Sql'
     );
     $template->load_data_sections();
 
-    my $foreign_key = Generate::Sql::Table::ForeignKey->new(
+    my $foreign_key = Daje::Generate::Sql::Table::ForeignKey->new(
         json      => $json,
         template  => $template,
         tablename => 'companies_users',

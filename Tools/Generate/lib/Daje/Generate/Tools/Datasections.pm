@@ -41,9 +41,9 @@ no warnings 'experimental::class';
 
 our $VERSION = '0.01';
 
-class Generate::Tools::Datasections {
+class Daje::Generate::Tools::Datasections {
     use Mojo::Loader qw {data_section};
-    use Generate::Test::Datasections;
+    use Daje::Generate::Test::Datasections;
 
     field $data_sections :reader :param;
     field $data_sec :reader = {};

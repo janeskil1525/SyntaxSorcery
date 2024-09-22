@@ -1,24 +1,18 @@
 {
-   "abstract" : "unknown",
+   "abstract" : "lib::Daje::Generate",
    "author" : [
-      "janskil1525@gmail.com"
+      "John Doe <john.doe@example.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "ExtUtils::MakeMaker version 7.70, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "gen-cpan-meta version 0.011, CPAN::Meta::Converter version 2.150010",
    "license" : [
-      "unknown"
+      "perl_5"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : 2
    },
-   "name" : "Generate",
-   "no_index" : {
-      "directory" : [
-         "t",
-         "inc"
-      ]
-   },
+   "name" : "Daje::Generate",
    "prereqs" : {
       "build" : {
          "requires" : {
@@ -34,9 +28,12 @@
          "requires" : {
             "Mojo::JSON" : "9.38"
          }
+      },
+      "test" : {
+         "requires" : {}
       }
    },
    "release_status" : "unstable",
-   "version" : "0.02",
+   "version" : "0.03",
    "x_serialization_backend" : "JSON::PP version 4.16"
 }

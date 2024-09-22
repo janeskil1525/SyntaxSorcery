@@ -1,17 +1,12 @@
+package Daje::Generate;
 use v5.40;
-use feature 'class';
-no warnings 'experimental::class';
+use Mojo::Base -base, -signatures:
 
-our $VERSION = '0.02';
+our $VERSION = '0.04';
 
-class GenerateSQL {
 
-    field $source_path :param;
-    field $target_path :param;
+sub process () {
 
-    sub process () {
-
-    }
 }
 
 

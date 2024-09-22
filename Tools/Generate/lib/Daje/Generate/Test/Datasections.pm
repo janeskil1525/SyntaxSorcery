@@ -1,4 +1,4 @@
-package Generate::Test::Datasections;
+package Daje::Generate::Test::Datasections;
 use strict;
 use warnings FATAL => 'all';
 

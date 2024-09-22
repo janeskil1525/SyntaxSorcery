@@ -2,12 +2,12 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
-use Generate::Sql::Table::Fields;
-use Generate::Sql::Table::Index;
-use Generate::Sql::Table::ForeignKey;
-use Generate::Sql::Table::Sql;
+use Daje::Generate::Sql::Table::Fields;
+use Daje::Generate::Sql::Table::Index;
+use Daje::Generate::Sql::Table::ForeignKey;
+use Daje::Generate::Sql::Table::Sql;
 
-    class Generate::Sql::Table :isa(Generate::Sql::Base::Common) {
+    class Daje::Generate::Sql::Table :isa(Generate::Sql::Base::Common) {
 
     method generate_table() {
         my $sql = "";
@@ -15,8 +15,8 @@ use Generate::Sql::Table::Sql;
         my $length = scalar @{$json_arr};
         for (my $i = 0; $i < $length; $i++) {
             my $json = @{$json_arr}[$i];
-            if (exists($self->json->{tables})) {
-                my $tables = $self->json->{tables};
+            if (exists($json->{tables})) {
+                my $tables = $json->{tables};
                 my $len = scalar @{$tables};
                 for(my $j = 0; $j < $len; $j++){
                     my $table = $self->shift_section($tables);
