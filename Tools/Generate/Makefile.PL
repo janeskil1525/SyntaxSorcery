@@ -4,7 +4,7 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-  NAME         => 'Data::Load::Datasection',
+  NAME         => 'Generate',
   VERSION_FROM => 'lib/Generate.pm',
   AUTHOR       => 'janskil1525@gmail.com',
   PREREQ_PM    => {

@@ -1,0 +1,33 @@
+{
+  "name" : "Generate",
+  "abstract" : "Generate stuff from a .json file",
+  "description" :  "Generate SQL for db creation Perl classes for db manipulation and Angular GUI components"
+  "version"  : "0.02",
+  "release_status" : "unstable",
+  "author"   : ["Jan Eskisson <janeskil@cpan.org>"],
+"license"  : [ "perl_5" ],
+  "provides" : {
+    "file"
+  },
+"prereqs" : {
+    "runtime" : {
+      "requires" : {
+        "perl"   : "5.40",
+        "Syntax::Keyword::Match" : "0",
+        "Mojo::JSON" : "0"
+      }
+    },
+    "build" : {
+      "requires" : {
+        "Test::More" : "0"
+      },
+    }
+  },
+"dynamic_config" : "1",
+"keywords" : [  "toolchain", "cpan", "dual-life"],
+"meta-spec" : {
+    "version" : "2",
+    "url"     : "https://metacpan.org/pod/CPAN::Meta::Spec",
+    },
+  "generated_by" : "Module::Build version 0.36"
+}

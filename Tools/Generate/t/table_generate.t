@@ -85,7 +85,11 @@ sub generate_table_sql()  {
     );
 
     $table->generate_table();
+    my $sql = $table->sql();
 
+    if(index($sql,"users") > -1) {
+        $result = 1;
+    }
     return $result;
 }
 
