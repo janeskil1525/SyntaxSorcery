@@ -19,13 +19,14 @@ option 'configpath' => (
     reader 		=> 'get_configpath',
     format 		=> 's',
     doc 		=> 'Configuration file',
-    default 	=> '/home/jan/Project/SyntaxSorcery/Tools/Generate/conf'
+    default 	=> '/home/jan/Project/SyntaxSorcery/Tools/Generate/conf/'
 );
 
 sub generate_sql($self) {
 
     my $config;
     try  {
+        my $path = $self->get_configpath();
         $config = Config::Tiny->read($self->get_configpath() . 'generate_sql.ini');
     } catch($e) {
         die "Could not open config file '$e'";
