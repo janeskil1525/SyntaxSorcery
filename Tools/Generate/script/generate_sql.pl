@@ -6,7 +6,7 @@ use v5.40;
 use Moo;
 use MooX::Options;
 use Cwd;
-use Config::Tiny;
+
 use feature 'say';
 use feature 'signatures';
 use Daje::GenerateSQL;
@@ -19,15 +19,18 @@ option 'configpath' => (
     reader 		=> 'get_configpath',
     format 		=> 's',
     doc 		=> 'Configuration file',
-    default 	=> '/home/jan/Project/SyntaxSorcery/Tools/Generate/conf/'
+    default 	=> '/home/jan/Project/SyntaxSorcery/Tools/Generate/conf/generate_sql.ini'
 );
 
 sub generate_sql($self) {
 
     my $config;
     try  {
-        my $path = $self->get_configpath();
-        $config = Config::Tiny->read($self->get_configpath() . 'generate_sql.ini');
+        my $config_path = $self->get_configpath();
+        my $sql_generator = Daje::GenerateSQL->new(
+            config_path => $config_path
+        )->process();
+
     } catch($e) {
         die "Could not open config file '$e'";
     };
