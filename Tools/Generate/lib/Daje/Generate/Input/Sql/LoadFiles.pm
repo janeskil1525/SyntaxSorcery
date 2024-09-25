@@ -13,11 +13,14 @@ class Daje::Generate::Input::Sql::LoadFiles {
     method load_files () {
         try {
             my $path = Mojo::File->new($source_path);
-            #$$path .= $filetype;
             $files = $path->list();
         } catch ($e) {
             die "Files could not be loaded: $e";
         };
+        my $length = scalar @{$files};
+        for (my $i = 0; $i < $length; $i++) {
+            @{$files}[$i]
+        }
 
         return;
     }

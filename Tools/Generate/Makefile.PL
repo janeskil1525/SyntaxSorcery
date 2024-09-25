@@ -11,6 +11,8 @@ WriteMakefile(
       'Syntax::Keyword::Match ' => '0.15',
       'Mojo::JSON'              => '9.38',
       'Config::Tiny'            => '2.30',
+      'Digest::SHA'             => '6.04',
+      'Mojo::File'              => '9.38',
   },
   test         => {TESTS => 't/*.t'}
 );
