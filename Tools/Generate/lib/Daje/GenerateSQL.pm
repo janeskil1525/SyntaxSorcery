@@ -6,6 +6,7 @@ our $VERSION = '0.01';
 
 class Daje::GenerateSQL {
     use Daje::Generate::Input::Sql::LoadFiles;
+    use Daje::Generate::Tools::FileChanged;
     use Config::Tiny;
     field $config_path :param :reader = "";
     field $config :reader;
@@ -13,6 +14,10 @@ class Daje::GenerateSQL {
     method process () {
         $self->load_config();
         my $files = $self->load_file_list();
+        my $length = scalar @{$files};
+        for (my $i = 0; $i < $length; $i++) {
+
+        }
 
         return;
     }

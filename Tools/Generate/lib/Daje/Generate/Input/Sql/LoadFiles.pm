@@ -19,7 +19,12 @@ class Daje::Generate::Input::Sql::LoadFiles {
         };
         my $length = scalar @{$files};
         for (my $i = 0; $i < $length; $i++) {
-            @{$files}[$i]
+            my $changed = Daje::Generate::Tools::FileChanged->new(
+                file_path_name =>  @{$files}[$i],
+            );
+            if ($changed->is_file_changed()) {
+
+            }
         }
 
         return;

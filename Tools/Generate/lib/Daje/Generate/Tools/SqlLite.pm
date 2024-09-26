@@ -9,6 +9,7 @@ class Daje::Generate::Tools::SqlLite {
 
     field $dbh :reader;
     field $data_dir :reader;
+    field $path :param;
 
     method open_database() {
         my $new = 0;
@@ -37,8 +38,9 @@ class Daje::Generate::Tools::SqlLite {
     method script() {
         return qq{
             CREATE TABLE IF NOT EXISTS file_hashes (
-                file varchar PRIMARY KEY,
-                hash varchar NOT NULL
+                file text PRIMARY KEY,
+                hash text NOT NULL,
+                moddatetime text
             );
         };
     }

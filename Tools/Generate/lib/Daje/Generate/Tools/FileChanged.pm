@@ -25,7 +25,7 @@ class Daje::Generate::Tools::FileChanged {
 
     method open_database() {
         my $database = Daje::Generate::Tools::SqlLite->new(
-            path => $path
+            path  => $path
         );
         $database->open_database();
         $dbh = $database->dbh;
