@@ -26,7 +26,10 @@
       },
       "runtime" : {
          "requires" : {
-            "Mojo::JSON" : "9.38"
+            "Config::Tiny" : "2.30",
+            "Digest::SHA" : "6.04",
+            "Mojo::File" : "0",
+            "Mojo::JSON" : "0"
          }
       },
       "test" : {

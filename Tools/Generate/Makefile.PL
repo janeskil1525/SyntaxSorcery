@@ -9,10 +9,10 @@ WriteMakefile(
   AUTHOR       => 'janskil1525@gmail.com',
   PREREQ_PM    => {
       'Syntax::Keyword::Match ' => '0.15',
-      'Mojo::JSON'              => '9.38',
+      'Mojo::JSON'              => '0',
       'Config::Tiny'            => '2.30',
       'Digest::SHA'             => '6.04',
-      'Mojo::File'              => '9.38',
+      'Mojo::File'              => '0',
   },
   test         => {TESTS => 't/*.t'}
 );
