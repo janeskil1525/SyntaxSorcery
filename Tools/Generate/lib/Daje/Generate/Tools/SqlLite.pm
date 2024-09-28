@@ -29,7 +29,7 @@ class Daje::Generate::Tools::SqlLite {
         try {
             $data_dir = $path->dirname . "/data";
             if(!( -d $data_dir)) {
-                $path->make_path($data_dir);
+                mkdir("$data_dir", 0700);
                 $new = 1;
             }
             my $dbfile = $data_dir .'/generate.db';

@@ -1,8 +1,8 @@
 package Daje::Generate;
 use v5.40;
-use Mojo::Base -base, -signatures:
+use Mojo::Base -base, -signatures;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 sub process () {

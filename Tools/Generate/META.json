@@ -1,5 +1,5 @@
 {
-  "abstract" : "lib::Daje::Generate",
+  "abstract" : "Daje::Generate",
   "author" : [
     "John Doe <john.doe@example.com>"
   ],

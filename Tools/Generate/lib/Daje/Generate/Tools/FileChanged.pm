@@ -11,19 +11,20 @@ class Daje::Generate::Tools::FileChanged {
     use DBI;
 
     field $database;
-    method is_file_changed($file_path_name, $path) {
+    method is_file_changed($file_path_name) {
         my $result = 0;
-        $path = Mojo::File->new($file_path_name);
-        $self->open_database();
+        my $path = Mojo::File->new($file_path_name);
+        $self->open_database($path);
         my $new_hash = $self->load_new_hash($path);
         my $old_hash = $database->load_hash($file_path_name);
         if ($new_hash ne $old_hash) {
             $result = 1;
         }
+
         return $result;
     }
 
-    method open_database() {
+    method open_database($path) {
         if (!defined $database) {
             $database = Daje::Generate::Tools::SqlLite->new(
                 path  => $path
@@ -33,7 +34,7 @@ class Daje::Generate::Tools::FileChanged {
     }
 
 
-    method load_new_hash() {
+    method load_new_hash($path) {
 
         my $file_content = $path->slurp;
         my $hash = sha256_hex($file_content);

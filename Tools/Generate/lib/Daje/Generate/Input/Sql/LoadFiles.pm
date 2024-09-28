@@ -9,21 +9,21 @@ class Daje::Generate::Input::Sql::LoadFiles {
     field $source_path :param :reader = "";
     field $files :reader = {};
     field $filetype :param :reader = "";
+    field  @changed_files :reader;
 
-    method load_files () {
+    method load_changed_files () {
+
         try {
             my $path = Mojo::File->new($source_path);
             $files = $path->list();
         } catch ($e) {
             die "Files could not be loaded: $e";
         };
+        my $changed = Daje::Generate::Tools::FileChanged->new();
         my $length = scalar @{$files};
         for (my $i = 0; $i < $length; $i++) {
-            my $changed = Daje::Generate::Tools::FileChanged->new(
-                file_path_name =>  @{$files}[$i],
-            );
-            if ($changed->is_file_changed()) {
-
+            if ($changed->is_file_changed( @{$files}[$i])) {
+                push @changed_files, @{$files}[$i];
             }
         }
 

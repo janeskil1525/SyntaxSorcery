@@ -5,30 +5,44 @@ no warnings 'experimental::class';
 our $VERSION = '0.01';
 
 class Daje::GenerateSQL {
+
     use Daje::Generate::Input::Sql::LoadFiles;
     use Daje::Generate::Tools::FileChanged;
+    use Daje::Generate::Sql::Table;
     use Config::Tiny;
     field $config_path :param :reader = "";
     field $config :reader;
 
     method process () {
+
         $self->load_config();
         my $files = $self->load_file_list();
         my $length = scalar @{$files};
         for (my $i = 0; $i < $length; $i++) {
+
 
         }
 
         return;
     }
 
+    method process_sql($file) {
+
+    }
+
     method load_file_list() {
-        my $files = Daje::Generate::Input::Sql::LoadFiles->new(
-            source_path => $config->{PATH}->{sql_source_dir},
-            filetype    => '*.json',
-        );
-        $files->load_files();
-        return $files->files();
+        my $files;
+        try {
+            $files = Daje::Generate::Input::Sql::LoadFiles->new(
+                source_path => $config->{PATH}->{sql_source_dir},
+                filetype    => '*.json'
+            );
+            $files->load_changed_files();
+        } catch ($e) {
+            die "could not load changed files '$e";
+        };
+
+        return \$files->changed_files();
     }
 
     method load_config () {
@@ -36,7 +50,9 @@ class Daje::GenerateSQL {
             $config = Config::Tiny->read($config_path);
         } catch ($e) {
             die "Could not load config '$e";
-        }
+        };
+
+        return;
     }
 }
 

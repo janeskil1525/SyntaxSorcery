@@ -7,7 +7,7 @@ use Daje::Generate::Sql::Table::Index;
 use Daje::Generate::Sql::Table::ForeignKey;
 use Daje::Generate::Sql::Table::Sql;
 
-    class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
+class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
 
     method generate_table() {
         my $sql = "";
