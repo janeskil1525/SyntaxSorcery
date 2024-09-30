@@ -5,47 +5,23 @@ no warnings 'experimental::class';
 our $VERSION = '0.01';
 
 class Daje::Generate::Tools::FileChanged {
-    use Daje::Generate::Tools::SqlLite;
     use Digest::SHA qw(sha256_hex);
     use Mojo::File;
-    use DBI;
 
-    field $database;
-    method save_hash($file) {
-        my $path = Mojo::File->new($file);
-        my $hash = $self->load_new_hash($path);
-        $database->save_hash($file, $hash);
-        return;
-    }
-
-    method is_file_changed($file_path_name) {
+    method is_file_changed($file_path_name, $old_hash) {
         my $result = 0;
         my $path = Mojo::File->new($file_path_name);
-        $self->open_database($path);
         my $new_hash = $self->load_new_hash($path);
-        my $old_hash = $database->load_hash($file_path_name);
+        $old_hash = "" unless defined $old_hash;
         if ($new_hash ne $old_hash) {
             $result = 1;
         }
-
         return $result;
     }
 
-    method open_database($path) {
-        if (!defined $database) {
-            $database = Daje::Generate::Tools::SqlLite->new(
-                path  => $path
-            );
-            $database->open_database();
-        }
-    }
-
-
     method load_new_hash($path) {
-
         my $file_content = $path->slurp;
         my $hash = sha256_hex($file_content);
-
         return $hash;
     }
 }

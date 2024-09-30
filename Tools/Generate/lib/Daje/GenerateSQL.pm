@@ -10,6 +10,7 @@ class Daje::GenerateSQL {
     use Daje::Generate::Tools::FileChanged;
     use Daje::Generate::Sql::Table;
     use Daje::Generate::Output::Sql::Table;
+    use Daje::Generate::Tools::Datasections;
     use Config::Tiny;
 
     field $config_path :param :reader = "";
@@ -18,11 +19,11 @@ class Daje::GenerateSQL {
 
     method process () {
 
-        $self->load_config();
-        my $files_list = $self->load_file_list();
+        $self->_load_config();
+        my $files_list = $self->_load_file_list();
         my $length = scalar @{$files_list};
         for (my $i = 0; $i < $length; $i++) {
-            if ($self->process_sql(@{$files_list}[$i])) {
+            if ($self->_process_sql(@{$files_list}[$i])) {
                 $config_manager->save_new_hash(@{$files_list}[$i]);
             }
         }
@@ -30,9 +31,9 @@ class Daje::GenerateSQL {
         return;
     }
 
-    method process_sql($file) {
+    method _process_sql($file) {
 
-        my $table = $self->load_table($file);
+        my $table = $self->_load_table($file);
         my $sql = $table->generate_table();
         Daje::Generate::Output::Sql::Table->new(
             config => $config,
@@ -42,12 +43,13 @@ class Daje::GenerateSQL {
 
     }
 
-    method load_table($file) {
+    method _load_table($file) {
 
         my $json = $config_manager->load_json($file);
-        my $template $self->load_templates();
-        my $table = try {
-            Daje::Generate::Sql::Table->new(
+        my $template = $self->_load_templates();
+        my $table;
+        try {
+            $table = Daje::Generate::Sql::Table->new(
                 template => $template,
                 json     => $json,
             );
@@ -58,9 +60,10 @@ class Daje::GenerateSQL {
         return $table;
     }
 
-    method load_templates() {
-        my $template = try {
-            return Daje::Generate::Tools::Datasections->new(
+    method _load_templates() {
+        my $template;
+        try {
+            $template = Daje::Generate::Tools::Datasections->new(
                 data_sections => "table,foreign_key,index",
                 source        => 'Generate::Templates::Sql'
             );
@@ -71,7 +74,7 @@ class Daje::GenerateSQL {
         return $template;
     }
 
-    method load_file_list() {
+    method _load_file_list() {
 
         try {
             $config_manager = Daje::Generate::Input::Sql::ConfigManager->new(
@@ -86,7 +89,7 @@ class Daje::GenerateSQL {
         return $config_manager->changed_files();
     }
 
-    method load_config () {
+    method _load_config () {
         try {
             $config = Config::Tiny->read($config_path);
         } catch ($e) {

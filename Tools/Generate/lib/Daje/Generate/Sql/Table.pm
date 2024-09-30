@@ -35,12 +35,13 @@ no warnings 'experimental::class';
 
 our $VERSION = '0.01';
 
+
+
+class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
 use Daje::Generate::Sql::Table::Fields;
 use Daje::Generate::Sql::Table::Index;
 use Daje::Generate::Sql::Table::ForeignKey;
 use Daje::Generate::Sql::Table::Sql;
-
-class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
 
     method generate_table() {
         my $sql = "";
@@ -50,21 +51,29 @@ class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
         for (my $i = 0; $i < $length; $i++) {
             my $json = @{$json_arr}[$i];
             if (exists($json->{version})) {
-                if(exists($json->{version}->{tables})) {
-                    my $tables = $json->{version}->{tables};
-                    my $len = scalar @{$tables};
-                    for(my $j = 0; $j < $len; $j++){
-                        my $table = $self->shift_section($tables);
-                        $sql .= $self->create_table_sql($table);
-                    }
-                }
-                $sections .= $self->create_section($sql, $json->{version}->{number});
+                $sections .= $self->_version($json->{version});
             }
         }
-
         $self->set_sql($self->create_file($sections));
-
         return ;
+    }
+
+    method _version($version) {
+        my $sql = "";
+        my $sections = "";
+        my $length = scalar @{$version};
+        for (my $i = 0; $i < $length; $i++) {
+            if(exists(@{$version}[$i]->{tables})) {
+                my $tables = @{$version}[$i]->{tables};
+                my $len = scalar @{$tables};
+                for(my $j = 0; $j < $len; $j++){
+                    my $table = $self->shift_section($tables);
+                    $sql .= $self->create_table_sql($table);
+                }
+                $sections .= $self->create_section($sql, @{$version}[$i]->{number});
+            }
+        }
+        return $sections
     }
 
     method create_file($sections) {
@@ -138,7 +147,7 @@ class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
     }
 
     method create_fields($json) {
-        my $fields = Generate::Sql::Table::Fields->new(
+        my $fields = Daje::Generate::Sql::Table::Fields->new(
             json     => $json,
             template => $self->template,
         );
@@ -151,7 +160,7 @@ class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
 
     method create_index($json) {
         my $test = 1;
-        my $index = Generate::Sql::Table::Index->new(
+        my $index = Daje::Generate::Sql::Table::Index->new(
             json      => $json,
             template  => $self->template,
             tablename => 'users',
@@ -164,7 +173,7 @@ class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
 
     method create_fkeys($json, $table_name) {
         my $foreignkeys = {};
-        my $foreign_key = Generate::Sql::Table::ForeignKey->new(
+        my $foreign_key = Daje::Generate::Sql::Table::ForeignKey->new(
             json      => $json,
             template  => $self->template,
             tablename => $table_name,

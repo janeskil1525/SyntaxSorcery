@@ -23,17 +23,16 @@ class Daje::Generate::Output::Sql::Table {
     }
 
     method create_new_filename() {
-        my $filename = try {
-            my $path = $config->{PATH}->{sql_target_dir} . Mojo::File->new($file)->basename();
-            $path =~ s/json/sql/ig;
-            return $path;
+        my $filename;
+        try {
+            $filename = $config->{PATH}->{sql_target_dir} . Mojo::File->new($file)->basename();
+            $filename =~ s/json/sql/ig;
         } catch ($e) {
             die "create_new_filename failed '$e'";
         };
 
         return $filename;
     }
-
 }
 
 
