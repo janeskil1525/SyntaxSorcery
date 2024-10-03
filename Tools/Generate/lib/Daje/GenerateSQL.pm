@@ -34,7 +34,8 @@ class Daje::GenerateSQL {
     method _process_sql($file) {
 
         my $table = $self->_load_table($file);
-        my $sql = $table->generate_table();
+        $table->generate_table();
+        my $sql = $table->sql();
         Daje::Generate::Output::Sql::Table->new(
             config => $config,
             file   => $file,
@@ -64,9 +65,10 @@ class Daje::GenerateSQL {
         my $template;
         try {
             $template = Daje::Generate::Tools::Datasections->new(
-                data_sections => "table,foreign_key,index",
-                source        => 'Generate::Templates::Sql'
+                data_sections => "table,foreign_key,index,section,file",
+                source        => 'Daje::Generate::Templates::Sql'
             );
+            $template->load_data_sections();
         } catch ($e) {
             die "load_templates failed '$e";
         };

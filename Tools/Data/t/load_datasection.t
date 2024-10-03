@@ -8,9 +8,9 @@ use Data::Load::Datasections;
 sub test_load_data_section {
     my $result = 0;
     my $test = "test";
-    my $template = Data::Load::Datasections->new(
+    my $template = GenerateSQL::Tools::Datasections->new(
         data_sections => "test1,test2" ,
-        source        => 'Data::Test::Datasections'
+        source        => 'GenerateSQL::Test::Datasections'
     );
     $template->load_data_sections();
 
@@ -22,9 +22,9 @@ sub test_load_data_section {
 sub test_set_templates {
     my $result = 0;
     my $test = "test";
-    my $template = Data::Load::Datasections->new(
+    my $template = GenerateSQL::Tools::Datasections->new(
         data_sections =>  "test1, test2",
-        source       => 'Data::Test::Datasections'
+        source       => 'GenerateSQL::Test::Datasections'
     );
     $template->add_data_section("test");
     my $templates = $template->data_sections;
@@ -38,9 +38,9 @@ sub test_set_templates {
 sub test_set_source {
     my $result = 0;
     my $test = "test";
-    my $template = Data::Load::Datasections->new(
+    my $template = GenerateSQL::Tools::Datasections->new(
         data_sections =>  "test1, test2",
-        source       => 'Data::Test::Datasections'
+        source       => 'GenerateSQL::Test::Datasections'
     );
     $template->set_source("test");
     my $source = $template->source;
@@ -54,9 +54,9 @@ sub test_set_source {
 sub test_set_data_section {
     my $result = 0;
     my $test = "test";
-    my $template = Data::Load::Datasections->new(
+    my $template = GenerateSQL::Tools::Datasections->new(
         data_sections =>  "test1, test2",
-        source       => 'Data::Test::Datasections'
+        source       => 'GenerateSQL::Test::Datasections'
     );
     $template->set_data_section("test","Hello World");
     my $section = $template->get_data_section("test");

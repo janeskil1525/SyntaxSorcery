@@ -44,7 +44,6 @@ use Daje::Generate::Sql::Table::ForeignKey;
 use Daje::Generate::Sql::Table::Sql;
 
     method generate_table() {
-        my $sql = "";
         my $sections = "";
         my $json_arr = $self->json;
         my $length = scalar @{$json_arr};
@@ -160,10 +159,11 @@ use Daje::Generate::Sql::Table::Sql;
 
     method create_index($json) {
         my $test = 1;
+        my $template = $self->template;
         my $index = Daje::Generate::Sql::Table::Index->new(
             json      => $json,
-            template  => $self->template,
-            tablename => 'users',
+            template  => $template,
+            tablename => $json->{name},
         );
 
         $index->create_index();
