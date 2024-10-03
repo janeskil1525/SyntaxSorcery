@@ -112,14 +112,14 @@ use Daje::Generate::Sql::Table::Sql;
             $sql = $self->create_sql($table->{table}, $name)
         }
 
-        my $template = $self->fill_template($name, $fields, $foreignkeys, $indexes);
+        my $template = $self->fill_template($name, $fields, $foreignkeys, $indexes, $sql);
 
         return $template;
 
     }
 
     method create_sql($json, $tablename) {
-        my $sql_stmt = Generate::Sql::Table::Sql->new(
+        my $sql_stmt = Daje::Generate::Sql::Table::Sql->new(
             json      => $json,
             template  => $self->template,
             tablename => $tablename,
@@ -128,7 +128,7 @@ use Daje::Generate::Sql::Table::Sql;
         return $result;
     }
 
-    method fill_template($name, $fields, $foreignkeys, $indexes) {
+    method fill_template($name, $fields, $foreignkeys, $indexes, $sql) {
         my $template = $self->template->get_data_section('table');
         $template =~ s/<<fields>>/$fields/ig;
         $template =~ s/<<tablename>>/$name/ig;
@@ -140,7 +140,9 @@ use Daje::Generate::Sql::Table::Sql;
         if(exists($foreignkeys->{template_ind})) {
             $indexes .= '\n' . $foreignkeys->{template_ind};
         }
-        $template =~ s/<<tablename>>/$indexes/ig;
+
+        $template =~ s/<<indexes>>/$indexes/ig;
+        $template =~ s/<<sql>>/$sql/ig;
 
         return $template;
     }
