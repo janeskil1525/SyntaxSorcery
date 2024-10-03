@@ -16,8 +16,8 @@ class Daje::Generate::Sql::Table::ForeignKey :isa(Daje::Generate::Sql::Base::Com
                 if (index($key,'_fkey') > -1) {
                     my ($template_fkey,$template_ind) = $self->get_templates($key);
                     my $referenced_table = substr($key,0,index($key,'_fkey'));
-                    $templates->{template_fkey} .= ',\n' . $template_fkey;
-                    $templates->{template_ind} .= '\n' . $template_ind;
+                    $templates->{template_fkey} .= ",  " . $template_fkey;
+                    $templates->{template_ind} .= "  " . $template_ind;
                     $created = 1;
                 }
             }

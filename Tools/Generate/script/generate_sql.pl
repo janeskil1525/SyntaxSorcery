@@ -25,8 +25,9 @@ option 'configpath' => (
 sub generate_sql($self) {
 
     my $config;
+    my $config_path;
     try  {
-        my $config_path = $self->get_configpath();
+        $config_path = $self->get_configpath();
     } catch($e) {
         die "Could not get config path '$e'";
     };

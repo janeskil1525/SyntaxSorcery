@@ -16,7 +16,7 @@ class Daje::Generate::Sql::Table::Index :isa(Daje::Generate::Sql::Base::Common){
             $template =~ s/<<fields>>/@{$json}[$i]->{fields}/ig;
             @{$json}[$i]->{fields} =~ s/,/_/ig;
             $template =~ s/<<field_names>>/@{$json}[$i]->{fields}/ig;
-            $sql .= $template . "\n\n";
+            $sql .= $template . "";
         }
         $self->set_sql($sql);
         return;

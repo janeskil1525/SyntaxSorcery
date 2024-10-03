@@ -35,8 +35,6 @@ no warnings 'experimental::class';
 
 our $VERSION = '0.01';
 
-
-
 class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
 use Daje::Generate::Sql::Table::Fields;
 use Daje::Generate::Sql::Table::Index;
@@ -138,7 +136,7 @@ use Daje::Generate::Sql::Table::Sql;
             $template =~ s/<<foregin_keys>>//ig;
         }
         if(exists($foreignkeys->{template_ind})) {
-            $indexes .= '\n' . $foreignkeys->{template_ind};
+            $indexes .= "" . $foreignkeys->{template_ind};
         }
 
         $template =~ s/<<indexes>>/$indexes/ig;
