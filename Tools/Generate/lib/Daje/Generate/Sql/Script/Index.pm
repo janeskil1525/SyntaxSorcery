@@ -2,7 +2,7 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
-class Daje::Generate::Sql::Table::Index :isa(Daje::Generate::Sql::Base::Common){
+class Daje::Generate::Sql::Script::Index :isa(Daje::Generate::Sql::Base::Common){
     field $tablename :param = "";
 
     method create_index {

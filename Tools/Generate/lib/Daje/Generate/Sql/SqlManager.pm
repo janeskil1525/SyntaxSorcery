@@ -2,14 +2,14 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
-# Daje::Generate::Sql::Table  Generatee Database and table related SQL scripts from JSON file
+# Daje::Generate::Sql::SqlManager  Generatee Database and table related SQL scripts from JSON file
 #
 # Synopsis
 # ========
 #
-# use Daje::Generate::Sql::Table;
+# use Daje::Generate::Sql::SqlManager;
 #
-# my $table = Daje::Generate::Sql::Table->new(
+# my $table = Daje::Generate::Sql::SqlManager->new(
 #       json        => $json,
 #       template    => $template,
 # );
@@ -22,7 +22,7 @@ no warnings 'experimental::class';
 #
 # LICENSE
 # =======
-# Daje::Generate::Sql::Table  (the distribution) is licensed under the same terms as Perl.
+# Daje::Generate::Sql::SqlManager  (the distribution) is licensed under the same terms as Perl.
 #
 # AUTHOR
 # ======
@@ -35,11 +35,11 @@ no warnings 'experimental::class';
 
 our $VERSION = '0.01';
 
-class Daje::Generate::Sql::Table :isa(Daje::Generate::Sql::Base::Common) {
-use Daje::Generate::Sql::Table::Fields;
-use Daje::Generate::Sql::Table::Index;
-use Daje::Generate::Sql::Table::ForeignKey;
-use Daje::Generate::Sql::Table::Sql;
+class Daje::Generate::Sql::SqlManager :isa(Daje::Generate::Sql::Base::Common) {
+use Daje::Generate::Sql::Script::Fields;
+use Daje::Generate::Sql::Script::Index;
+use Daje::Generate::Sql::Script::ForeignKey;
+use Daje::Generate::Sql::Script::Sql;
 
     method generate_table() {
         my $sections = "";
@@ -117,7 +117,7 @@ use Daje::Generate::Sql::Table::Sql;
     }
 
     method create_sql($json, $tablename) {
-        my $sql_stmt = Daje::Generate::Sql::Table::Sql->new(
+        my $sql_stmt = Daje::Generate::Sql::SqlManager::Sql->new(
             json      => $json,
             template  => $self->template,
             tablename => $tablename,
@@ -146,7 +146,7 @@ use Daje::Generate::Sql::Table::Sql;
     }
 
     method create_fields($json) {
-        my $fields = Daje::Generate::Sql::Table::Fields->new(
+        my $fields = Daje::Generate::Sql::Script::Fields->new(
             json     => $json,
             template => $self->template,
         );
@@ -160,7 +160,7 @@ use Daje::Generate::Sql::Table::Sql;
     method create_index($json) {
         my $test = 1;
         my $template = $self->template;
-        my $index = Daje::Generate::Sql::Table::Index->new(
+        my $index = Daje::Generate::Sql::Script::Index->new(
             json      => $json,
             template  => $template,
             tablename => $json->{name},
@@ -173,7 +173,7 @@ use Daje::Generate::Sql::Table::Sql;
 
     method create_fkeys($json, $table_name) {
         my $foreignkeys = {};
-        my $foreign_key = Daje::Generate::Sql::Table::ForeignKey->new(
+        my $foreign_key = Daje::Generate::Sql::Script::ForeignKey->new(
             json      => $json,
             template  => $self->template,
             tablename => $table_name,

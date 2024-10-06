@@ -8,7 +8,7 @@ class Daje::GenerateSQL {
 
     use Daje::Generate::Input::Sql::ConfigManager;
     use Daje::Generate::Tools::FileChanged;
-    use Daje::Generate::Sql::Table;
+    use Daje::Generate::Sql::SqlManager;
     use Daje::Generate::Output::Sql::Table;
     use Daje::Generate::Tools::Datasections;
     use Config::Tiny;
@@ -32,16 +32,26 @@ class Daje::GenerateSQL {
     }
 
     method _process_sql($file) {
+        my $sql = "";
+        try {
+            my $table = $self->_load_table($file);
+            $table->generate_table();
+            $sql = $table->sql();
+        } catch ($e) {
+            die "Create sql failed '$e'";
+        };
 
-        my $table = $self->_load_table($file);
-        $table->generate_table();
-        my $sql = $table->sql();
-        Daje::Generate::Output::Sql::Table->new(
-            config => $config,
-            file   => $file,
-            sql    => $sql,
-        )->save_file();
+        try {
+            Daje::Generate::Output::Sql::Table->new(
+                config => $config,
+                file   => $file,
+                sql    => $sql,
+            )->save_file();
+        } catch ($e) {
+            die "Could not create output '$e'";
+        };
 
+        return 1;
     }
 
     method _load_table($file) {
@@ -50,7 +60,7 @@ class Daje::GenerateSQL {
         my $template = $self->_load_templates();
         my $table;
         try {
-            $table = Daje::Generate::Sql::Table->new(
+            $table = Daje::Generate::Sql::SqlManager->new(
                 template => $template,
                 json     => $json,
             );

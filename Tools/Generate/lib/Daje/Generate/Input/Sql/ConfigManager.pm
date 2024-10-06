@@ -19,6 +19,11 @@ class Daje::Generate::Input::Sql::ConfigManager {
 
     method save_new_hash($file) {
         my $path = Mojo::File->new($file);
+        my $new_hash = $change->load_new_hash($path);
+        my $dbh = Daje::Generate::Database::SqlLite->new(path => $path)->get_dbh();
+        my $operations = Daje::Generate::Database::Operations->new(dbh => $dbh);
+        $operations->save_hash($path->dirname . '/' . $path->basename, $new_hash);
+
     }
 
     method load_json($file) {
