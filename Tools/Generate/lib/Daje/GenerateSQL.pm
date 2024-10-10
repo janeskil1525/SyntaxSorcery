@@ -4,7 +4,7 @@ no warnings 'experimental::class';
 
 our $VERSION = '0.01';
 
-class Daje::GenerateSQL {
+class Daje::GenerateSQL :isa(Daje::Generate::Base::Common) {
 
     use Daje::Generate::Input::Sql::ConfigManager;
     use Daje::Generate::Tools::FileChanged;
@@ -57,7 +57,10 @@ class Daje::GenerateSQL {
     method _load_table($file) {
 
         my $json = $config_manager->load_json($file);
-        my $template = $self->_load_templates();
+        my $template = $self->_load_templates(
+            'Daje::Generate::Templates::Sql',
+            "table,foreign_key,index,section,file"
+        );
         my $table;
         try {
             $table = Daje::Generate::Sql::SqlManager->new(
@@ -71,20 +74,7 @@ class Daje::GenerateSQL {
         return $table;
     }
 
-    method _load_templates() {
-        my $template;
-        try {
-            $template = Daje::Generate::Tools::Datasections->new(
-                data_sections => "table,foreign_key,index,section,file",
-                source        => 'Daje::Generate::Templates::Sql'
-            );
-            $template->load_data_sections();
-        } catch ($e) {
-            die "load_templates failed '$e";
-        };
 
-        return $template;
-    }
 
     method _load_file_list() {
 
@@ -101,15 +91,6 @@ class Daje::GenerateSQL {
         return $config_manager->changed_files();
     }
 
-    method _load_config () {
-        try {
-            $config = Config::Tiny->read($config_path);
-        } catch ($e) {
-            die "Could not load config '$e";
-        };
-
-        return;
-    }
 }
 
 

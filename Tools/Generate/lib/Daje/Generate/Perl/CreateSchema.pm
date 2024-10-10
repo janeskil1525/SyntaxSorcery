@@ -7,7 +7,7 @@ use Syntax::Operator::Matches qw( matches mismatches );
 has 'pg';
 has 'log';
 
-sub get_tables($self, $excluded, $schema) {
+sub get_db_schema($self, $schema) {
     $schema = 'public' unless $schema;
 
     my @methods = ();
