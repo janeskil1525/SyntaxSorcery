@@ -11,8 +11,8 @@ sub get_db_schema($self, $schema) {
     $schema = 'public' unless $schema;
 
     my @tables = ();
-    my @tables = $self->_get_tables($schema);
-        my $length = scalar @tables;
+    @tables = $self->_get_tables($schema);
+    my $length = scalar @tables;
     for (my $i = 0; $i < $length; $i++) {
         my $table->{table_name} = $tables[$i]->{table_name};
         my $column_names = $self->get_table_column_names($tables[$i]->{table_name}, $schema);
