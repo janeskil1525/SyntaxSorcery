@@ -25,6 +25,20 @@ option 'configpath' => (
 
 sub generate_schema ($self) {
 
+    my $config_path;
+    try  {
+        $config_path = $self->get_configpath();
+    } catch($e) {
+        die "Could not get config path '$e'";
+    };
+
+    try {
+        my $sql_generator = Daje::GenerateSchema->new(
+            config_path => $config_path
+        )->process();
+    } catch ($e) {
+        die "Could not generate schema '$e";
+    };
 
 }
 
