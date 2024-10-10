@@ -24,6 +24,7 @@ class Daje::Generate::Input::Sql::ConfigManager {
         my $operations = Daje::Generate::Database::Operations->new(dbh => $dbh);
         $operations->save_hash($path->dirname . '/' . $path->basename, $new_hash);
 
+        return 1;
     }
 
     method load_json($file) {
