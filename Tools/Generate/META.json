@@ -1,7 +1,7 @@
 {
   "abstract" : "Daje::Generate",
   "author" : [
-    "John Doe <john.doe@example.com>"
+    "Jan Eskilsson <janeskil1525@gmail.com>"
   ],
   "dynamic_config" : 0,
   "generated_by" : "gen-cpan-meta version 0.011",
@@ -24,5 +24,5 @@
     }
   },
   "release_status" : "unstable",
-  "version" : "0.03"
+  "version" : "0.06"
 }
