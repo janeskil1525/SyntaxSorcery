@@ -10,14 +10,18 @@ has 'log';
 sub get_db_schema($self, $schema) {
     $schema = 'public' unless $schema;
 
-    my @methods = ();
+    my @tables = ();
     my @tables = $self->_get_tables($schema);
         my $length = scalar @tables;
     for (my $i = 0; $i < $length; $i++) {
-        my $table = $tables[$i];
-        my $column_names = $self->get_table_column_names($table->{table_name}, $schema);
-        $method->{column_names} = $column_names;
-        push (@methods, $method);
+        my $table->{table_name} = $tables[$i]->{table_name};
+        my $column_names = $self->get_table_column_names($tables[$i]->{table_name}, $schema);
+        $table->{column_names} = $column_names;
+        my $indexes = $self->get_table_indexes($tables[$i]->{table_name});
+        if (defined $indexes) {
+            $table->{indexes} = $indexes;
+        }
+        push (@methods, $table);
         my $temp = 1;
     }
 
