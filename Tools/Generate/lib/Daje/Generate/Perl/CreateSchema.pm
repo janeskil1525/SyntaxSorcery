@@ -4,8 +4,7 @@ use Mojo::Base -base, -signatures;
 use Scalar::Util qw {reftype};
 use Syntax::Operator::Matches qw( matches mismatches );
 
-has 'pg';
-has 'log';
+has 'db';
 
 sub get_db_schema($self, $schema) {
     $schema = 'public' unless $schema;
@@ -15,9 +14,9 @@ sub get_db_schema($self, $schema) {
     my $length = scalar @tables;
     for (my $i = 0; $i < $length; $i++) {
         my $table->{table_name} = $tables[$i]->{table_name};
-        my $column_names = $self->get_table_column_names($tables[$i]->{table_name}, $schema);
+        my $column_names = $self->_get_table_column_names($tables[$i]->{table_name}, $schema);
         $table->{column_names} = $column_names;
-        my $indexes = $self->get_table_indexes($tables[$i]->{table_name});
+        my $indexes = $self->_get_table_indexes($tables[$i]->{table_name});
         if (defined $indexes) {
             $table->{indexes} = $indexes;
         }
@@ -74,14 +73,12 @@ sub _get_keys($self, $column_names) {
 
 sub _get_tables($self, $schema) {
 
-    my $tables_stmt = qq {
+    my @tables = $self->db->query(qq {
         SELECT table_name
           FROM information_schema.tables
          WHERE table_schema = ?
            AND table_type='BASE TABLE';
-    };
-
-    my @tables = $self->pg->db->query($tables_stmt,($schema))->hashes;
+    },($schema))->hashes;
     @tables = @{ $tables[0] };
 
     return @tables;
@@ -89,7 +86,8 @@ sub _get_tables($self, $schema) {
 
 
 sub _get_views($self, $schema) {
-    my $views_stmt = qq {
+
+    my @views = $self->db->query(qq {
         SELECT table_name
             FROM
               information_schema.views
@@ -98,18 +96,16 @@ sub _get_views($self, $schema) {
                 'information_schema', 'pg_catalog'
               ) AND table_schema = ?
             ORDER BY table_name;
-    };
-
-    my @views = $self->pg->db->query($views_stmt,($schema))->hashes;
+    },($schema))->hashes;
     @views =  @{$views[0]};
 
     return @views;
 }
 
-sub get_table_column_names($self, $table, $schema) {
+sub _get_table_column_names($self, $table, $schema) {
 
     $schema = 'public' unless $schema;
-    my @column_names = $self->pg->db->query(
+    my @column_names = $self->db->query(
         qq{
             SELECT column_name
                 FROM information_schema.columns
@@ -125,7 +121,7 @@ sub get_table_column_names($self, $table, $schema) {
 sub _get_table_indexes($self, $table, $schema) {
 
     $schema = 'public' unless $schema;
-    my @column_names = $self->pg->db->query(
+    my @column_names = $self->db->query(
         qq{
             select
                 t.relname as table_name,

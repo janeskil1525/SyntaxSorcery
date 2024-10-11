@@ -2,6 +2,7 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
+use Mojo::Pg;
 
 our $VERSION = '0.01';
 
@@ -21,8 +22,10 @@ class Daje::GenerateSchema :isa(Daje::Generate::Base::Common) {
     }
 
     method _load_db_schema() {
+        my $pg = Mojo::Pg->new($config->{DATABASE}->{connection});
+
         my $dbschema = Daje::Generate::Perl::CreateSchema->new(
-            $config->{DATABASE}->{connection}
+            db => $pg->db
         )->get_db_schema('public');
 
         return $dbschema;
