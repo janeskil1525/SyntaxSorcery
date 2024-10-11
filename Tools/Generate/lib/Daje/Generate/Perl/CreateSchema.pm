@@ -122,4 +122,41 @@ sub get_table_column_names($self, $table, $schema) {
     return \@column_names;
 }
 
+sub _get_table_indexes($self, $table, $schema) {
+
+    $schema = 'public' unless $schema;
+    my @column_names = $self->pg->db->query(
+        qq{
+            select
+                t.relname as table_name,
+                i.relname as index_name,
+                a.attname as column_name,
+                insp.nspname as index_schema
+            from
+                pg_class t,
+                pg_class i,
+                pg_index ix,
+                pg_attribute a,
+                pg_namespace insp
+            where
+                t.oid = ix.indrelid
+                and i.oid = ix.indexrelid
+                and a.attrelid = t.oid
+                and a.attnum = ANY(ix.indkey)
+                and t.relkind = 'r'
+                and ix.indisunique
+                and ix.indisprimary = false
+                and t.relname not like 'pg_%'
+                and insp.oid = i.relnamespace
+                and table_schema = ?
+                AND table_name = ?
+            order by
+                t.relname,
+                i.relname;
+        }, ($schema, $table)
+    )->hashes;
+
+    @column_names = @{ $column_names[0] } if @{ $column_names[0] };
+    return \@column_names;
+}
 1;
