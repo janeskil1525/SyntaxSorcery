@@ -14,7 +14,6 @@ class Daje::GenerateSQL :isa(Daje::Generate::Base::Common) {
     use Config::Tiny;
 
     field $config_path :param :reader = "";
-    field $config :reader;
     field $config_manager;
 
     method process () {
@@ -42,8 +41,8 @@ class Daje::GenerateSQL :isa(Daje::Generate::Base::Common) {
         };
 
         try {
-            Daje::Generate::Output::Sql::Table->new(
-                config => $config,
+            Daje::Generate::Output::Sql::SqlManager->new(
+                config => $self->config,
                 file   => $file,
                 sql    => $sql,
             )->save_file();
@@ -80,7 +79,7 @@ class Daje::GenerateSQL :isa(Daje::Generate::Base::Common) {
 
         try {
             $config_manager = Daje::Generate::Input::Sql::ConfigManager->new(
-                source_path => $config->{PATH}->{sql_source_dir},
+                source_path => $self->config->{PATH}->{sql_source_dir},
                 filetype    => '*.json'
             );
             $config_manager->load_changed_files();

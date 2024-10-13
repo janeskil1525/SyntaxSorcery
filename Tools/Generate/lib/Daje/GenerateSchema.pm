@@ -9,8 +9,6 @@ our $VERSION = '0.01';
 class Daje::GenerateSchema :isa(Daje::Generate::Base::Common) {
     use Daje::Generate::Perl::CreateSchema;
 
-    field $config_path :param :reader = "";
-    field $config :reader;
 
     method process () {
         $self->_load_config();
@@ -22,7 +20,8 @@ class Daje::GenerateSchema :isa(Daje::Generate::Base::Common) {
     }
 
     method _load_db_schema() {
-        my $pg = Mojo::Pg->new($config->{DATABASE}->{connection});
+        my $connection = $self->config->{DATABASE}->{connection};
+        my $pg = Mojo::Pg->new->dsn($connection);
 
         my $dbschema = Daje::Generate::Perl::CreateSchema->new(
             db => $pg->db

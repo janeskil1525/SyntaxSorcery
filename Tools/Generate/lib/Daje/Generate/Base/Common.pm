@@ -4,8 +4,13 @@ no warnings 'experimental::class';
 
 
 class Daje::Generate::Base::Common {
+    use Config::Tiny;
+
+    field $config :reader;
+    field $config_path :param :reader;
 
     method _load_config () {
+
         try {
             $config = Config::Tiny->read($config_path);
         } catch ($e) {
