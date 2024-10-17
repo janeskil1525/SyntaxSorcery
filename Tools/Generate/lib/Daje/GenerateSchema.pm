@@ -4,9 +4,11 @@ no warnings 'experimental::class';
 
 use Mojo::Pg;
 
+
 our $VERSION = '0.01';
 
 class Daje::GenerateSchema :isa(Daje::Generate::Base::Common) {
+    use Mojo::JSON qw{to_json};
     use Daje::Generate::Perl::CreateSchema;
 
 
@@ -16,7 +18,7 @@ class Daje::GenerateSchema :isa(Daje::Generate::Base::Common) {
         my $json = $self->_build_json($schema);
         $self->_save_json($json);
 
-
+        return 1;
     }
 
     method _load_db_schema() {
@@ -31,11 +33,18 @@ class Daje::GenerateSchema :isa(Daje::Generate::Base::Common) {
     }
 
     method _build_json($schema) {
+        my $json = to_json($schema);
 
+        return $json;
     }
 
     method _save_json($json) {
 
+        my $path = $self->config->{DATABASE}->{output_dir};
+        open(my $fh, ">", $path . 'schema.json')
+            or die "could not open $path . 'schema.json";
+        print $fh $json;
+        close $fh;
 
     }
 }

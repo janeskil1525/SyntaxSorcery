@@ -10,34 +10,35 @@ use Syntax::Operator::Matches qw( matches mismatches );
 
     method get_db_schema( $schema) {
         $schema = 'public' unless $schema;
-        my @methods;
+        my @tab;
+        my @vie;
         my @tables = ();
         @tables = $self->_get_tables($schema);
         my $length = scalar @tables;
         for (my $i = 0; $i < $length; $i++) {
-            my $table->{table_name} = $tables[$i]->{table_name};
+            my $table->{table}->{table_name} = $tables[$i]->{table_name};
             my $column_names = $self->_get_table_column_names($tables[$i]->{table_name}, $schema);
-            $table->{column_names} = $column_names;
+            $table->{table}->{column_names} = $column_names;
             my $indexes = $self->_get_table_indexes($tables[$i]->{table_name}, $schema);
             if (defined $indexes) {
-                $table->{indexes} = $indexes;
+                $table->{table}->{indexes} = $indexes;
             }
-            push (@methods, $table);
+            push (@tab, $table);
             my $temp = 1;
         }
-
+        my $result->{tables} = \@tab;
         my @views = $self->_get_views($schema);
         $length = scalar @views;
         for (my $i = 0; $i < $length; $i++ ) {
-            my $view = $views[$i];
-            my $column_names = $self->get_table_column_names($view->{table_name}, $schema);
-            my $method = $self->build_view_methods($view, $column_names);
-            $method->{column_names} = $column_names;
-            push (@methods, $method);
+            my $view->{view} = $views[$i];
+            my $column_names = $self->get_table_column_names($view->{view}->{table_name}, $schema);
+            $view->{view}->{column_names} = $column_names;
+            $view->{view}->{keys} = $self->_get_keys($column_names);
+            push (@vie, $view);
         }
-        my $meth = \@methods;
 
-        return $meth;
+        $result->{views} = \@vie;
+        return $result;
     }
 
     method build_view_methods($view, $column_names) {
