@@ -4,7 +4,8 @@ no warnings 'experimental::class';
 
 
 class Daje::Generate::Perl::Base::Common {
-
+    field $template :param :reader;
+    field $json :param :reader;
 
 };
 

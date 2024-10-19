@@ -11,21 +11,27 @@ class Daje::GeneratePerl :isa(Daje::Generate::Base::Common) {
 
     method process() {
         $self->_load_config();
-        my $json = $self->get_json();
-        $self->create_perl($json);
-
+        my $json = $self->_get_json();
+        $self->_create_perl($json);
     }
 
-    method create_perl($json) {
-        my $manager = Daje::Generate::Perl::PerlManager->new(
-            config_path => $config_path
+    method _create_perl($json) {
+        my $template = $self->_load_templates(
+            'Daje::Generate::Templates::Perl',
+            "class,method,baseclass,interface"
         );
 
+        my $manager = Daje::Generate::Perl::PerlManager->new(
+            config      => $self->config(),
+            template    => $template,
+            json        => $json,
+        )->generate_classes();
 
+        return $manager->success()
     }
 
-    method get_json() {
-        my $path = $self->config->{DATABASE}->{schema_dir};
+    method _get_json() {
+        my $path = $self->config->{PATH}->{schema_dir};
         my $json_txt = Mojo::File->new($path . "schema.json")->slurp();
         my $json = from_json($json_txt);
 

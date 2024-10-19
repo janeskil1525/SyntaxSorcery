@@ -3,9 +3,27 @@ use feature 'class';
 no warnings 'experimental::class';
 
 class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)  {
+    field $success :reader = 1;
+    field $config :param :reader;
 
-    method generate_table_class($data) {
+    method generate_classes() {
+        my $length = scalar $self->json->{tables};
+        for (my $i = 0; $i < $length; $i++) {
+            $self->generate_table_class(@{$self->json->{tables}}[$i]);
+        }
+        $length = scalar $self->json->{views};
+        for (my $i = 0; $i < $length; $i++) {
+            $self->generate_view_class(@{$self->json->{views}}[$i]);
+        }
+    }
 
+    method generate_table_class($table) {
+        $table = $table;
+
+    }
+
+    method generate_view_class($view) {
+        $view = $view;
     }
 }
 

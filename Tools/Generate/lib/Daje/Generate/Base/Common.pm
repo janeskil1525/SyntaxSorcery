@@ -5,6 +5,7 @@ no warnings 'experimental::class';
 
 class Daje::Generate::Base::Common {
     use Config::Tiny;
+    use Daje::Generate::Tools::Datasections;
 
     field $config :reader;
     field $config_path :param :reader;
