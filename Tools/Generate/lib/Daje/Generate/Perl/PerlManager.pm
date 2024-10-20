@@ -3,27 +3,41 @@ use feature 'class';
 no warnings 'experimental::class';
 
 class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)  {
+    use Daje::Generate::Perl::Generate::Fields;
+
     field $success :reader = 1;
     field $config :param :reader;
 
     method generate_classes() {
         my $length = scalar $self->json->{tables};
         for (my $i = 0; $i < $length; $i++) {
-            $self->generate_table_class(@{$self->json->{tables}}[$i]);
+            $self->_generate_table_class(@{$self->json->{tables}}[$i]);
         }
         $length = scalar $self->json->{views};
         for (my $i = 0; $i < $length; $i++) {
-            $self->generate_view_class(@{$self->json->{views}}[$i]);
+            $self->_generate_view_class(@{$self->json->{views}}[$i]);
         }
     }
 
-    method generate_table_class($table) {
-        $table = $table;
+    method _generate_table_class($table) {
+        my $fields = $self->_get_fields($table);
+
+
 
     }
 
-    method generate_view_class($view) {
+    method _generate_view_class($view) {
         $view = $view;
+    }
+
+    method _get_fields($json) {
+        my $template = $self->template();
+        my $fields = Daje::Generate::Perl::Generate::Fields->new(
+            json     => $json->{table},
+            template => $template
+        )->generate();
+
+
     }
 }
 
