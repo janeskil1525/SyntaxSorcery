@@ -4,6 +4,7 @@ no warnings 'experimental::class';
 
 class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)  {
     use Daje::Generate::Perl::Generate::Fields;
+    use Daje::Generate::Perl::Generate::Methods;
 
     field $success :reader = 1;
     field $config :param :reader;
@@ -21,9 +22,20 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
 
     method _generate_table_class($table) {
         my $fields = $self->_get_fields($table);
+        my $methods = $self->_methods($fields, $table);
 
 
+    }
 
+    method _methods($fields, $table) {
+        my $template = $self->template();
+        my $methods = Daje::Generate::Perl::Generate::Methods->new(
+            json     => $table,
+            fields   => $fields,
+            template => $template
+        )->generate();
+
+        return $methods;
     }
 
     method _generate_view_class($view) {
