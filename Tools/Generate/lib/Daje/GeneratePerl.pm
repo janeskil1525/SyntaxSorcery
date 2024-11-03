@@ -18,7 +18,7 @@ class Daje::GeneratePerl :isa(Daje::Generate::Base::Common) {
     method _create_perl($json) {
         my $template = $self->_load_templates(
             'Daje::Generate::Templates::Perl',
-            "class,method,baseclass,interface"
+            "class,method,baseclass,interface,load_from_pkey,load_from_fkey,load_list,insert_data,update_data"
         );
 
         my $manager = Daje::Generate::Perl::PerlManager->new(

@@ -14,6 +14,7 @@ WriteMakefile(
       'Digest::SHA'               => '6.04',
       'Mojo::File'                => '0',
       'Syntax::Operator::Matches' => '0',
+      'String::CamelCase'         => '0',
   },
   test         => {TESTS => 't/*.t'}
 );

@@ -7,14 +7,32 @@ class Daje::Generate::Perl::Generate::Methods :isa(Daje::Generate::Perl::Base::C
     field $fields :param :reader;
     field $pkey :reader;
     field $fkey :reader;
+    field $insert :reader;
+    field $update :reader;
 
     method generate() {
-        $pkey = $self->_get_pkey();
-        $fkey = $self->_get_fkey()
+        $pkey = $self->_get_from_pkey();
+        $fkey = $self->_get_from_fkey()
+        $insert = $self->_insert_method();
+        $update = $self->_update_method();
 
     }
 
-    method _get_fkey() {
+    method _update_method() {
+        my $tpl = $self->template->get_data_section('update_data');
+        my $table_name = $self->json->{table_name};
+        $tpl =~ s/<<table_name>>/$table_name/ig;
+        return $tpl;
+    }
+
+    method _insert_method() {
+        my $tpl = $self->template->get_data_section('insert_data');
+        my $table_name = $self->json->{table_name};
+        $tpl =~ s/<<table_name>>/$table_name/ig;
+        return $tpl;
+    }
+
+    method _get_from_fkey() {
         my $load_from_fkey = "";
         my $f_key = $fields->foregin_keys();
         my $table_name = $self->json->{table_name};
@@ -31,7 +49,7 @@ class Daje::Generate::Perl::Generate::Methods :isa(Daje::Generate::Perl::Base::C
         return $load_from_fkey;
     }
 
-    method _get_pkey(){
+    method _get_from_pkey(){
         my $load_from_pkey = $self->template->get_data_section('load_from_pkey');
         my $p_key = $fields->primary_key();
         my $select = $fields->select();
