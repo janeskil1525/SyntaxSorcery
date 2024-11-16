@@ -44,6 +44,7 @@ our $VERSION = '0.01';
 class Daje::Generate::Tools::Datasections {
     use Mojo::Loader qw {data_section};
     use Daje::Generate::Templates::Sql;
+    use Daje::Generate::Templates::Perl;
 
     field $data_sections :reader :param;
     field $data_sec :reader = {};

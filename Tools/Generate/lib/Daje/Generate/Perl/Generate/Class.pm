@@ -7,7 +7,7 @@ our $VERSION = '0.01';
 class Daje::Generate::Perl::Generate::Class :isa(Daje::Generate::Perl::Base::Common)  {
     use String::CamelCase qw(camelize);
 
-    field $methods;
+    field $methods :param;
     field $fields;
     field $config :param;
 

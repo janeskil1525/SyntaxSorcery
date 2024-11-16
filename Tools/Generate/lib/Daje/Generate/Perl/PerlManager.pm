@@ -2,6 +2,8 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
+our $VERSION = '0.01';
+
 class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)  {
     use Daje::Generate::Perl::Generate::Fields;
     use Daje::Generate::Perl::Generate::Methods;
@@ -11,7 +13,7 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
     field $config :param :reader;
 
     method generate_classes() {
-        my $length = scalar $self->json->{tables};
+        my $length = scalar @{$self->json->{tables}};
         for (my $i = 0; $i < $length; $i++) {
             $self->_generate_table_class(@{$self->json->{tables}}[$i]);
         }
@@ -25,17 +27,18 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
         my $fields = $self->_get_fields($table);
         my $methods = $self->_methods($fields, $table);
         my $class = $self->_class($methods, $table);
-
+        $self->_save_class($class, $table);
     }
 
     method _class($methods, $table) {
         my $template = $self->template();
         my $class = Daje::Generate::Perl::Generate::Class->new(
-            json     => $table,
+            json     => $table->{table},
             methods  => $methods,
             template => $template,
             config   => $config,
-        )->generate();
+        );
+        $class->generate();
 
         return $class;
     }
@@ -43,10 +46,11 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
     method _methods($fields, $table) {
         my $template = $self->template();
         my $methods = Daje::Generate::Perl::Generate::Methods->new(
-            json     => $table,
+            json     => $table->{table},
             fields   => $fields,
             template => $template
-        )->generate();
+        );
+        $methods->generate();
 
         return $methods;
     }
@@ -60,9 +64,9 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
         my $fields = Daje::Generate::Perl::Generate::Fields->new(
             json     => $json->{table},
             template => $template
-        )->generate();
-
-
+        );
+        $fields->generate();
+        return $fields;
     }
 }
 

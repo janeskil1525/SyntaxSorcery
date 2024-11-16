@@ -2,10 +2,12 @@ use v5.40;
 use feature 'class';
 no warnings 'experimental::class';
 
+our $VERSION = '0.01';
+
 class Daje::Generate::Perl::Generate::Fields :isa(Daje::Generate::Perl::Base::Common) {
     field $select :reader = "";
     field $primary_key :reader = "";
-    field $foregin_keys :reader = ();
+    field $foreign_keys :reader = ();
 
     method generate() {
        $self->_get_fields();
@@ -21,14 +23,15 @@ class Daje::Generate::Perl::Generate::Fields :isa(Daje::Generate::Perl::Base::Co
                 $primary_key = @{$column_names}[$i]->{column_name};
             }
             if (index(@{$column_names}[$i]->{column_name},'_fkey') > -1){
-                push (@{$foregin_keys}, @{$column_names}[$i]->{column_name});
+                push (@{$foreign_keys}, @{$column_names}[$i]->{column_name});
             }
-            $select .= @{$column_names}[$i]->{column_name};
-            my $test = 1;
+            if (length($select) > 0) {
+                $select .= ', ' . @{$column_names}[$i]->{column_name};
+            } else {
+                $select = @{$column_names}[$i]->{column_name};
+            }
         }
-        my $test = 1;
     }
-
 }
 
 1;
