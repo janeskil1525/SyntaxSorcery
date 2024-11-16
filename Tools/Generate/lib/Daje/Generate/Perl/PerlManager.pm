@@ -8,6 +8,7 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
     use Daje::Generate::Perl::Generate::Fields;
     use Daje::Generate::Perl::Generate::Methods;
     use Daje::Generate::Perl::Generate::Class;
+    use Daje::Generate::Output::Perl::Class;
 
     field $success :reader = 1;
     field $config :param :reader;
@@ -28,6 +29,15 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
         my $methods = $self->_methods($fields, $table);
         my $class = $self->_class($methods, $table);
         $self->_save_class($class, $table);
+    }
+
+    method _save_class($class, $table) {
+        my $output = Daje::Generate::Output::Perl::Class->new(
+            config     => $config,
+            table_name => $table->{table_name},
+            perl       => $class,
+        );
+        $output->save_file();
     }
 
     method _class($methods, $table) {
