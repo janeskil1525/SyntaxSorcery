@@ -6,6 +6,7 @@ our $VERSION = '0.01';
 
 class Daje::Generate::Output::Perl::Class {
     use Mojo::File;
+    use String::CamelCase qw(camelize);
 
     field $config :param ;
     field $table_name :param;
@@ -27,10 +28,11 @@ class Daje::Generate::Output::Perl::Class {
 
     method _create_new_filename() {
         my $filename;
+
         try {
-            $filename = $config->{PATH}->{name_space_dir} . $table_name . ".pm";
+            $filename = $config->{PATH}->{name_space_dir} . camelize($table_name) . ".pm";
         } catch ($e) {
-            die "create_new_filename failed '$e'";
+            die "Daje::Generate::Output::Perl::Class::create_new_filename failed '$e'";
         };
 
         return $filename;

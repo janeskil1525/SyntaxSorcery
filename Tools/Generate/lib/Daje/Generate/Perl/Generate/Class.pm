@@ -8,7 +8,7 @@ class Daje::Generate::Perl::Generate::Class :isa(Daje::Generate::Perl::Base::Com
     use String::CamelCase qw(camelize);
 
     field $methods :param;
-    field $fields;
+    field $fields :param;
     field $config :param;
 
     method generate() {
@@ -18,16 +18,23 @@ class Daje::Generate::Perl::Generate::Class :isa(Daje::Generate::Perl::Base::Com
         my $base_name_space = $config->{CLASS}->{base_name_space};
         my $class_name = camelize($table_name);
         my $base_class_name = "Base";
-        my $search_fields = $fields->select();
 
-        $tpl =~ s/<<fields>>/$search_fields/ig;
+        my $select_fields = $methods->select_fields();
+        my $pkey = $methods->pkey();
+        my $fkey = $methods->fkey();
+        my $insert = $methods->insert();
+        my $update = $methods->update();
+
+        $tpl =~ s/<<fields>>/$select_fields/ig;
         $tpl =~ s/<<name_space>>/$name_space/ig;
         $tpl =~ s/<<classname>>/$class_name/ig;
         $tpl =~ s/<<base_name_space>>/$base_name_space/ig;
-        $tpl =~ s/<<pkey>>/$base_class_name/ig;
-        $tpl =~ s/<<fkey>>/$base_class_name/ig;
-        $tpl =~ s/<<insert>>/$base_class_name/ig;
-        $tpl =~ s/<<update>>/$base_class_name/ig;
+        $tpl =~ s/<<base_class_name>>/$base_class_name/ig;
+
+        $tpl =~ s/<<pkey>>/$pkey/ig;
+        $tpl =~ s/<<fkey>>/$fkey/ig;
+        $tpl =~ s/<<insert>>/$insert/ig;
+        $tpl =~ s/<<update>>/$update/ig;
 
         return $tpl;
     }

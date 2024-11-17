@@ -10,13 +10,21 @@ class Daje::Generate::Perl::Generate::Methods :isa(Daje::Generate::Perl::Base::C
     field $fkey :reader;
     field $insert :reader;
     field $update :reader;
+    field $select_fields :reader;
 
     method generate() {
         $pkey = $self->_get_from_pkey();
         $fkey = $self->_get_from_fkey();
         $insert = $self->_insert_method();
         $update = $self->_update_method();
+        $select_fields = $self->_select_fields();
+    }
 
+    method _select_fields() {
+        my $tpl = $self->template->get_data_section('fields_method');
+        my $select = $self->fields->select();
+        $tpl =~ s/<<select_fields>>/$select/ig;
+        return $tpl;
     }
 
     method _update_method() {
@@ -42,7 +50,7 @@ class Daje::Generate::Perl::Generate::Methods :isa(Daje::Generate::Perl::Base::C
             my $length = scalar @{$f_key};
             for (my $i = 0; $i < $length; $i++) {
                 my $tpl = $self->template->get_data_section('load_from_fkey');
-                $tpl =~ s/<<foreign_key>>/$f_key/ig;
+                $tpl =~ s/<<foreign_key>>/@{$f_key}[$i]/ig;
                 $tpl =~ s/<<table_name>>/$table_name/ig;
                 $tpl =~ s/<<select_fields>>/$select/ig;
                 $load_from_fkey .= $tpl . "\n\n";

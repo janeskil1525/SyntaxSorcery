@@ -27,30 +27,32 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
     method _generate_table_class($table) {
         my $fields = $self->_get_fields($table);
         my $methods = $self->_methods($fields, $table);
-        my $class = $self->_class($methods, $table);
-        $self->_save_class($class, $table);
+        my $perl = $self->_class($methods, $table, $fields);
+        $self->_save_class($perl, $table->{table});
     }
 
-    method _save_class($class, $table) {
+    method _save_class($perl, $table) {
+
         my $output = Daje::Generate::Output::Perl::Class->new(
             config     => $config,
             table_name => $table->{table_name},
-            perl       => $class,
+            perl       => $perl,
         );
         $output->save_file();
     }
 
-    method _class($methods, $table) {
+    method _class($methods, $table, $fields) {
         my $template = $self->template();
         my $class = Daje::Generate::Perl::Generate::Class->new(
             json     => $table->{table},
             methods  => $methods,
             template => $template,
             config   => $config,
+            fields   => $fields,
         );
-        $class->generate();
+        my $perl = $class->generate();
 
-        return $class;
+        return $perl;
     }
 
     method _methods($fields, $table) {
