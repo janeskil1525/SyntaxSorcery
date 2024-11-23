@@ -11,6 +11,7 @@ class Daje::Generate::Perl::Generate::Methods :isa(Daje::Generate::Perl::Base::C
     field $insert :reader;
     field $update :reader;
     field $select_fields :reader;
+    field $select_method :reader;
 
     method generate() {
         $pkey = $self->_get_from_pkey();
@@ -18,12 +19,23 @@ class Daje::Generate::Perl::Generate::Methods :isa(Daje::Generate::Perl::Base::C
         $insert = $self->_insert_method();
         $update = $self->_update_method();
         $select_fields = $self->_select_fields();
+        $select_method = $self->_select_method();
+    }
+
+    method _select_method() {
+        my $tpl = $self->template->get_data_section('load_list');
+
+        return $tpl;
     }
 
     method _select_fields() {
         my $tpl = $self->template->get_data_section('fields_method');
         my $select = $self->fields->select();
+        my $p_key = $self->fields->primary_key();
+        my $table_name = $self->json->{table_name};
         $tpl =~ s/<<select_fields>>/$select/ig;
+        $tpl =~ s/<<primary_key>>/$p_key/ig;
+        $tpl =~ s/<<table_name>>/$table_name/ig;
         return $tpl;
     }
 

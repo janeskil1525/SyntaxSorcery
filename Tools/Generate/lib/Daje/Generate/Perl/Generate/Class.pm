@@ -24,6 +24,7 @@ class Daje::Generate::Perl::Generate::Class :isa(Daje::Generate::Perl::Base::Com
         my $fkey = $methods->fkey();
         my $insert = $methods->insert();
         my $update = $methods->update();
+        my $select_method = $methods->select_method();
 
         $tpl =~ s/<<fields>>/$select_fields/ig;
         $tpl =~ s/<<name_space>>/$name_space/ig;
@@ -35,6 +36,9 @@ class Daje::Generate::Perl::Generate::Class :isa(Daje::Generate::Perl::Base::Com
         $tpl =~ s/<<fkey>>/$fkey/ig;
         $tpl =~ s/<<insert>>/$insert/ig;
         $tpl =~ s/<<update>>/$update/ig;
+
+        $tpl =~ s/<<select>>/$select_method/ig;
+        $tpl =~ s/<<methods>>//ig;
 
         return $tpl;
     }

@@ -11,6 +11,7 @@ class Daje::Generate::Output::Perl::Class {
     field $config :param ;
     field $table_name :param;
     field $perl :param;
+    field $name_space_dir :param;
 
     method save_file() {
 
@@ -30,7 +31,7 @@ class Daje::Generate::Output::Perl::Class {
         my $filename;
 
         try {
-            $filename = $config->{PATH}->{name_space_dir} . camelize($table_name) . ".pm";
+            $filename = $config->{PATH}->{$name_space_dir} . camelize($table_name) . ".pm";
         } catch ($e) {
             die "Daje::Generate::Output::Perl::Class::create_new_filename failed '$e'";
         };

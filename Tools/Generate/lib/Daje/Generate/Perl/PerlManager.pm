@@ -9,19 +9,36 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
     use Daje::Generate::Perl::Generate::Methods;
     use Daje::Generate::Perl::Generate::Class;
     use Daje::Generate::Output::Perl::Class;
+    use Daje::Generate::Perl::Generate::BaseClass;
 
     field $success :reader = 1;
     field $config :param :reader;
 
     method generate_classes() {
+        $self->_base_class();
         my $length = scalar @{$self->json->{tables}};
         for (my $i = 0; $i < $length; $i++) {
             $self->_generate_table_class(@{$self->json->{tables}}[$i]);
+            $self->_generate_interface_class(@{$self->json->{tables}}[$i]);
         }
         $length = scalar $self->json->{views};
         for (my $i = 0; $i < $length; $i++) {
             $self->_generate_view_class(@{$self->json->{views}}[$i]);
         }
+        return 1;
+    }
+
+    method _generate_interface_class() {
+        $table->{table_name}
+    }
+
+    method _base_class() {
+        my $template = $self->template();
+        Daje::Generate::Perl::Generate::BaseClass->new(
+            template => $template,
+            config   => $config,
+        )->generate();
+
     }
 
     method _generate_table_class($table) {
@@ -34,9 +51,10 @@ class Daje::Generate::Perl::PerlManager :isa(Daje::Generate::Perl::Base::Common)
     method _save_class($perl, $table) {
 
         my $output = Daje::Generate::Output::Perl::Class->new(
-            config     => $config,
-            table_name => $table->{table_name},
-            perl       => $perl,
+            config         => $config,
+            table_name     => $table->{table_name},
+            perl           => $perl,
+            name_space_dir => "name_space_dir",
         );
         $output->save_file();
     }
