@@ -1,15 +1,26 @@
-package Daje::Generate;
 use v5.40;
-use Mojo::Base -base, -signatures;
+use feature 'class';
+no warnings 'experimental::class';
 
 our $VERSION = '0.08';
 
+class  Daje::Generate :isa(Daje::Generate::Base::Common) {
+    use Daje::GenerateSQL;
+    use Daje::GenerateSchema;
+    use Daje::GeneratePerl;
 
-sub process () {
-
+    method process () {
+        Daje::GenerateSQL->new(
+            config_path => $self->config_path(),
+        )->process();
+        Daje::GenerateSchema->new(
+            config_path => $self->config_path(),
+        )->process();
+        Daje::GeneratePerl->new(
+            config_path => $self->config_path(),
+        )->process();
+    }
 }
-
-
 
 1;
 
