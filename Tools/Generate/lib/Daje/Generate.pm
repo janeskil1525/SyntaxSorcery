@@ -2,7 +2,7 @@ package Daje::Generate;
 use v5.40;
 use Mojo::Base -base, -signatures;
 
-our $VERSION = '0.06';
+our $VERSION = '0.08';
 
 
 sub process () {
@@ -12,6 +12,7 @@ sub process () {
 
 
 1;
+
 
 
 
